@@ -1,0 +1,151 @@
+<div class="page-margin products">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="wo_market">
+				<div class="latest-products">
+					<?php
+					$category_name = '';
+					$data = array();
+					if (!empty($_GET['c_id'])) {
+						if (is_numeric($_GET['c_id'])) {
+							if (array_key_exists($_GET['c_id'], $wo['products_categories'])) {
+								?>
+								<input type="hidden" value="<?php echo Wo_Secure($_GET['c_id']); ?>" id="c_id" />
+								<?php
+								$category_name = $wo['products_categories'][$_GET['c_id']];
+								$data['c_id'] = Wo_Secure($_GET['c_id']);
+							}
+						}
+					} else {
+						echo '<input type="hidden" value="0" id="c_id" />';
+					}
+					?>
+					<div class="market_header">
+						<h3><?php echo $wo['lang']['search_for_products_main'] ?></h3>
+						<form action="">
+							<div class="form-group inner-addon left-addon">
+								 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search glyphicon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+				    	         <?php
+				    	         $placeholder = $wo['lang']['search_for_products_main'];
+				    	         if (!empty($category_name)) {
+				    	         	$placeholder = str_replace('{category_name}', $category_name, $wo['lang']['search_for_products']);
+				    	         }
+				    	         ?>
+				    		     <input type="text" class="form-control" onkeyup="Wo_SearchProducts(this.value)" placeholder="<?php echo $placeholder; ?>">
+				    	     </div>
+						</form>
+					</div> 
+						 
+					<div class="market_categories">
+						<ul class="product-category-slider">
+							<?php 
+							$category_id = (!empty($_GET['c_id'])) ? (int) $_GET['c_id'] : 0;
+							foreach ($wo['products_categories'] as $key => $category) {
+								$active = ($category_id == $key) ? ' active' : '';
+							?>
+							<li class="<?php echo $active?>"><a href="<?php echo Wo_SeoLink('index.php?link1=products&c_id=' . $key);?>"><?php echo $category;?></a></li>
+							<?php } ?>
+						</ul>
+						<span class="product-navigate scrollRight"><a id="scrollRight" href="javascript:;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a></span>
+						<span class="product-navigate scrollLeft"><a id="scrollLeft" href="javascript:;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a></span>
+					</div>	
+					
+					<div class="market_bottom">
+						<div class="market_bottom_header">
+							<span class="<?php echo Wo_RightToLeft('pull-right'); ?>" >
+								<a href="#" data-toggle="modal" data-target="#create-product-modal" data-backdrop="static" data-keyboard="false">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> <?php echo $wo['lang']['new'] ?>
+								</a>
+							</span>
+							<h3 class="active"><?php echo $wo['lang']['latest_products'] ?></h3>
+						</div>
+						<?php
+							$data['limit'] = 10;
+							$products = Wo_GetProducts($data);
+							if (count($products) > 0) {
+						?>
+						<div id="products" class="row">
+						<?php
+						foreach ($products as $key => $wo['product']) {
+							echo Wo_LoadPage('products/products-list'); 
+						}
+						} else {
+							echo '<h5 class="search-filter-center-text empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> ' . $wo['lang']['no_available_products'] . '</h5>';
+						}
+						?>
+						</div>
+					</div>
+				</div> 	
+			</div>
+			<div class="posts_load load-produts">
+			    <?php if (count($products) > 0): ?>
+				<div class="load-more">
+                    <button class="btn btn-default text-center pointer" onclick="Wo_LoadProducts();">
+                    <i class="fa fa-arrow-down progress-icon" data-icon="arrow-down"></i> <?php echo $wo['lang']['load_more_products'] ?></button>
+                </div>
+                <?php endif ?>
+			</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<script>
+function Wo_LoadProducts() {
+	$('.load-produts').html('<div class="white-loading list-group"><div class="cs-loader"><div class="cs-loader-inner"><label> ●</label><label> ●</label><label> ●</label><label> ●</label><label> ●</label><label> ●</label></div></div></div>');
+	var $c_id = $('#c_id').val();
+	var $last_id = $('.product:last').attr('data-id');
+	$.post(Wo_Ajax_Requests_File() + '?f=load_more_products', {last_id: $last_id, c_id:$c_id}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadProducts();"><i class="fa fa-arrow-down progress-icon" data-icon="arrow-down"></i> <?php echo $wo['lang']['load_more_products'] ?></button></div>');
+				$('#products').append(data.html);
+			} else {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadProducts();"><?php echo $wo['lang']['no_available_products'] ?></button></div>');
+			}
+		}
+	});
+}
+function Wo_SearchProducts(value) {
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=search_products', {value: value, c_id:c_id}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#products').html(data.html);
+			} else {
+				$('#products').html('<?php echo $wo['lang']['no_available_products'] ?>');
+			}
+		}
+	});
+}
+
+var userStep = 480;
+var userScrolling = false;
+
+// Wire up events for the 'scrollUp' link:
+$("#scrollRight").bind("click", function(event) {
+    event.preventDefault();
+    $(".product-category-slider").animate({
+        scrollLeft: "-=" + userStep + "px"
+    });
+});
+
+$("#scrollLeft").bind("click", function(event) {
+    event.preventDefault();
+    $(".product-category-slider").animate({
+        scrollLeft: "+=" + userStep + "px"
+    });
+});
+
+function scrollContent(direction) {
+    var amount = (direction === "right" ? "-=1px" : "+=1px");
+    $(".product-category-slider").animate({
+        scrollLeft: amount
+    }, 1, function() {
+        if (userScrolling) {
+            scrollContent(direction);
+        }
+    });
+}
+</script>

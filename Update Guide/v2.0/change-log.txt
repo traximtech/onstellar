@@ -1,0 +1,49 @@
+Change-log:
+
+[Added] digitalocean spaces storage.
+[Added] poke system.
+[Added] reaction system (Like, Haha, wow, angry, love).
+[Added] gift system, users can send each other gifts.
+[Added] statics and charts to daily ads views / clicks.
+[Added] Infobip to SMS providers.
+[Added] stripe to wallet system like on go pro page.
+[Added] password recovery by phone number.
+[Added] estimated user reach on create ads page.
+[Added] bitcoin (coinpayments) payment method for ads and pro system.
+[Added] Payment Transactions history for wallet topups and pro system, with the ability to turn this feature on or off.
+[Added] the option to change the phone number from settings page.
+[Added] popular posts page.
+[Added] photos & videos sections to profile.
+[Added] End video chat button.
+[Added] ability to use percentage in the affiliate system.
+[Added] telegram to share options.
+[Added] admin can disable and enable social share links.
+[Added] more emojies.
+[Added] shortkey for posts, clicking "j" to scroll to next post.
+[Added] points system, user can earn points for posts, comments, likes, dislikes, wonders, and reactions. (User can spend points on pro or ads, or he can requst them as dollars).
+[Added] stickers to chat and messages.
+[Added] rotate system for images.
+[Added] Manage developer applications from admin panel.
+[Added] Report comment to admin.
+[Added] Advanced search system for custom fields.
+[Added] Added filter by age, and verfied to the search system.
+[Added] suggested groups / pages in my groups and my pages.
+[Added] search system in blog.
+[Added] auto friend system (Auto follow / friend with new registred users).
+[Added] the ability to view mutual friends from the profile (friends system).
+[Added] the ability to know who viewed your stories via notifications.
+[Added] ReCaptcha check to forgot password form (secuirty).
+[Added] blog comment notifications.
+[Added] Email notification when the user's account was deleted.
+[Added] a warning message before unfriending someone.
+[Added] session manager (users can view / manage browser / platforms where they are logged in).
+[Added] notification management system (Users can choose what kind of notifications they want to get).
+[Added] the ability to add followers to a specific user using IDs, in Admin > Users (Enabled just in follow system).
+[Added] blacklist system, admin can blacklist emails, usernames, and IP addresses.
+[Added] activities system, user can view his own activities from his profile (like, dislike, react, wonder, comment, reply, follow, friends).
+[Added] the ability for a user to choose if their profile should be found/indexed by search engines.
+[Improved] load speed.
+[Compressed] JS files to few less files.
+[Fixed] bugs on API.
+[Fixed] major bugs in the script. (+10)
+[Fixed] 3 security issues.

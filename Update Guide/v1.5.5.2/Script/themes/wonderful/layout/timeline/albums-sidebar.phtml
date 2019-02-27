@@ -1,0 +1,19 @@
+<ul class="list-group" id="sidebar-pages-list-container">
+   <li class="list-group-item text-muted" contenteditable="false">
+   <a href="<?php echo Wo_SeoLink('index.php?link1=albums&user=' . $wo['user_profile']['username']);?>" data-ajax="?link1=albums&user=<?php echo $wo['user_profile']['username'];?>">
+      <i class="zmdi zmdi-collection-image" style="font-size: 20px;margin: -3px 5px 0px 0px;"></i><?php echo $wo['lang']['albums'];?></a> (<?php echo $wo['user_profile']['details']['album_count'];?>)
+   </li>
+   <li>
+      <div class="sidebar-albums-container">
+          <?php 
+          foreach (Wo_GetUserAlbums($wo['user_profile']['user_id'], 'sidebar', 12) as $wo['album']) {
+            $wo['album']['album_name'] = mb_substr($wo['album']['album_name'], 0, 10);
+            echo Wo_LoadPage('sidebar/sidebar-album-list');
+          }
+          ?>
+      </div>
+   </li>
+   <li>
+      <div class="clear"></div>
+   </li>
+</ul>

@@ -1,0 +1,278 @@
+<?php echo Wo_LoadPage('ads/includes/header'); ?>
+<div class="w100 create-ads-cont">
+	<form  class="form" method="get" id="create-ads">
+	<div id="create-ads-alert" class="w100 col-md-12">
+			
+	</div>
+	<div class="col-md-7 col-lg-7 col-sm-7 col-xs-12 create-ads-inner-left">
+		<div class="form-group w100">
+			<label class="col-md-3 col-sm-12 col-xs-12"><?php echo $wo['lang']['company']; ?>:</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<input type="text" class="form-control" name="name" max="50">
+			</div>
+		</div>
+		<div>
+			<div class="col-md-3 col-sm-12 col-xs-12"></div>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<small class="main"><?php echo $wo['lang']['select_a_page_or_link'] ?></small>
+			</div>
+		</div>
+		<div class="form-group w100">
+			
+			<label class="col-md-3 col-sm-12 col-xs-12"><?php echo $wo['lang']['url']; ?>:</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<input type="url" class="form-control" name="website">
+			</div>
+		</div>
+		<div class="form-group w100">
+			
+			<label class="col-md-3 col-sm-12 col-xs-12"><?php echo $wo['lang']['my_pages']; ?>:</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<select class="form-control" name="page" id="select-page">			
+				<?php if ($wo['my-pages'] && count($wo['my-pages']) > 0): ?>
+					<option value="" selected>
+						<?php echo $wo['lang']['select']; ?>
+					</option>
+					<?php foreach ($wo['my-pages'] as $wo['pageItem']): ?>
+						<option value="<?php echo $wo['pageItem']['page_name']; ?>">
+							<?php echo $wo['pageItem']['page_name']; ?>
+						</option>
+					<?php endforeach; ?>
+				<?php else:?>
+					<option disabled="disabled" selected="selected">
+							<?php echo $wo['lang']['no_pages_found']; ?>
+					</option>
+				<?php endif;?>
+				</select>
+			</div>
+		</div>
+		<div class="form-group w100">
+			
+			<label class="col-md-3 col-sm-12 col-xs-12"><?php echo $wo['lang']['title']; ?>:</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<input type="text" class="form-control" name="headline">
+			</div>
+		</div>
+
+		<div class="form-group w100">
+			
+			<label class="col-md-3 col-sm-12 col-xs-12"><?php echo $wo['lang']['description']; ?>:</label>
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<textarea class="form-control" name="description"></textarea>
+			</div>
+		</div>
+
+
+		<div class="form-group w100">
+			
+			<label class="col-md-3 col-sm-12 col-xs-12"><?php echo $wo['lang']['location']; ?>:</label>
+			<div class="col-md-9 col-sm-12 col-xs-12" id="review-ads-location">
+				<input id="ads-location" name="location"  type="text" class="form-control"> 
+			</div>
+		</div>
+		<div class="form-group w100" id="review-ads-location">
+          <div class="col-sm-3"></div>
+          <div class="col-md-9" id="place"> 
+          </div>
+        </div>
+       	<div class="form-group">
+			<label class="col-md-3"><?php echo $wo['lang']['audience']; ?></label>
+			<div class="col-md-9">
+				<select data-live-search="true" data-actions-box="true" name="audience-list[]" id="ads-audience" class="selectpicker form-control" data-size="7" multiple>
+					<?php foreach ($wo['audience'] as $country_ids => $country): ?>
+						<?php if ($country_ids == 0): ?>
+							<option value="<?php echo $country_ids; ?>" disabled>
+								<?php echo $country; ?>
+							</option>
+						<?php else: ?>
+							<option value="<?php echo $country_ids; ?>">
+								<?php echo $country; ?>
+							</option>
+						<?php endif; ?>
+					<?php endforeach;?>
+				</select>
+			</div>
+			<div class="clear"></div>
+		</div>
+			
+	</div>
+	<div class="col-md-5 col-sm-5 col-lg-5 col-xs-12 create-ads-inner-right">
+		<div class="form-group w100">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>
+						<?php echo $wo['lang']['media']; ?>
+					</label>
+					<div >
+						<div class="select-admedai-box" id="select-ad-media">
+							<button class="btn btn-default" type="button">
+								<i class="fa fa-upload" aria-hidden="true"></i> <?php echo $wo['lang']['choose_file']; ?>
+							</button>
+							<input type="text" readonly placeholder="<?php echo $wo['lang']['no_file_chosen']; ?>">
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+		
+				<div class="form-group">
+					<label>
+						<?php echo $wo['lang']['gender'] ?>
+					</label>
+					<select name="gender" class="form-control">
+						<option value="all" selected> 
+							<?php echo $wo['lang']['all']; ?> 
+						</option>
+						<option value="male"> 
+							<?php echo $wo['lang']['male']; ?> 
+						</option>
+						<option value="female"> 
+							<?php echo $wo['lang']['female']; ?> 
+						</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label>
+						<?php echo $wo['lang']['appears'] ?>
+					</label>
+					<select name="appears" class="form-control">
+						<option value="post" selected>
+							<?php echo $wo['lang']['post']; ?> (<?php echo $wo['lang']['format_image']; ?>)
+						</option>
+						<option value="sidebar">
+							<?php echo $wo['lang']['sidebar']; ?> (<?php echo $wo['lang']['format_image']; ?>)
+						</option>
+						<option value="video">
+							<?php echo $wo['lang']['video_player']; ?> (<?php echo $wo['lang']['format_video']; ?>)
+						</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>
+						<?php echo $wo['lang']['bidding']; ?>
+					</label>
+					<select name="bidding" id="bidding" class="form-control">
+						<option value="clicks">
+							<?php echo str_replace('${{PRICE}}',  Wo_GetCurrency($wo['config']['currency']) . $wo['config']['ad_c_price'], $wo['lang']['pay_per_click']); ?>	
+						</option>
+						<option value="views">
+							<?php echo str_replace('${{PRICE}}', Wo_GetCurrency($wo['config']['currency']) . $wo['config']['ad_v_price'], $wo['lang']['pay_per_imprssion']); ?>
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12">
+				<?php 
+					if ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') {
+						?>
+						<br>
+						<div class="alert alert-warning">
+							<?php echo $wo['lang']['balance_is_0'] ?> 
+							<span>
+								<i class="fa fa-university" aria-hidden="true"></i>
+							</span>
+							<a href="<?php echo Wo_SeoLink('index.php?link1=wallet'); ?>">			
+								<?php echo $wo['lang']['top_up'] ?>
+							</a>
+						</div>
+						<?php
+					}
+				?>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="button-group">
+				<div class="col-md-12">
+					<button class="btn btn-main mdbtn" type="submit" <?php echo ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') ? 'disabled' : ''; ?>>
+						<i class="fa fa-plus progress-icon fa-fw"></i>
+						<?php echo $wo['lang']['publish']; ?>
+					</button>
+					&nbsp;
+					<button class="btn btn-default cancel mdbtn" type="reset">
+						<i class="fa fa-ban progress-icon fa-fw"></i>
+						<?php echo $wo['lang']['cancel']; ?>
+					</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<input type="file" name="media" class="hidden" id="ad-media-file" accept="image/* video/*">
+	</form>
+	<div class="clear"></div>
+</div>
+
+<style>
+body {padding-left: 0px;}
+.navbar-default {padding-right: 0px;}
+
+@media (min-width: 1200px){
+body {padding-left: 0px;padding-right: 205px;}
+.navbar-default {padding-right: 205px;}
+}
+@media (max-width: 990px) {
+body {padding-left: 0px;overflow-x: auto;}
+}
+</style>
+<script>
+	jQuery(document).ready(function($) {
+
+	  	$('.selectpicker').selectpicker();
+
+	    $("#ads-location").keyup(function(event) {
+	        if ($(this).val().length >= 3) {
+	          Wo_Delay(function(){$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=' + $("#ads-location").val() + '&language=en"></iframe>')},1000)
+	        }
+	        else{
+	          Wo_Delay(function(){$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=us&language=en"></iframe>')},1000)
+	        }
+      	});
+
+	    $("#select-page").change(function(event) {
+		  	var self     = $(this);
+		  	if (self.val() != '') {
+		  		var page_url = document.location.origin +'/'+ self.val();
+		  		$('#create-ads').find("input[name=website]").val(page_url);
+		  	}
+
+		  	else{
+		  		$('#create-ads').find("input[name=website]").val('');
+		  	}
+	  	});
+
+        $("#select-ad-media").click(function(event) {
+      		$("#ad-media-file").click();
+        });
+
+
+      	$("#ad-media-file").change(function(event) {
+	      	var filename = $(this).val().split('\\').pop();
+	      	$("#select-ad-media").find('input').val(filename);
+      	});
+
+		$('#create-ads').ajaxForm({
+			url: Wo_Ajax_Requests_File() + '?f=ads&s=new',
+			type:"POST",
+			beforeSend: function() {
+				Wo_progressIconLoader($('#create-ads').find('button.btn-main'));
+			},
+			success: function(data) {
+				scrollToTop();
+				if (data['status'] == 200) {
+					$("#create-ads-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+					window.location = data.url;
+				} 
+
+				else if (data['message']) {
+					$("#create-ads-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+				} 
+
+				Wo_progressIconLoader($('#create-ads').find('button.btn-main'));
+			}
+		});
+
+	});
+</script>

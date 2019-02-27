@@ -1,0 +1,104 @@
+<?php echo Wo_LoadPage('welcome/welcome-header-register');?>
+<div class="wrapper">
+  <?php echo Wo_LoadPage('welcome/welcome-header-logo');?>
+  <form class="login" id="login" method="post">
+    <p class="title"><?php echo $wo['lang']['login']?></p>
+    <input name="username" type="text" placeholder="<?php echo $wo['lang']['username']?>" autofocus/>
+    <i class="fa fa-user"></i>
+    <input name="password" type="password" placeholder="<?php echo $wo['lang']['password']?>" />
+    <i class="fa fa-key"></i>
+    <a href="<?php echo Wo_SeoLink('index.php?link1=forgot-password');?>"><?php echo $wo['lang']['forget_password']?></a>
+    <?php if(!empty( $_GET['last_url'])){?>
+    <div class="form-group">
+      <input type="hidden" name="last_url" value="<?php echo urldecode(Wo_Secure($_GET['last_url']));?>">
+    </div>
+    <?php } ?>
+    <div class="text-center">
+      <hr>
+      <?php if($wo['config']['facebookLogin'] != 0): ?>
+      <a href="<?php echo $wo['facebookLoginUrl']?>" class="btn btn-social-icon btn-facebook">
+      <i class="fa fa-facebook"></i>
+      </a>
+      <?php endif; ?>
+      <?php if($wo['config']['googleLogin'] != 0): ?>
+      <a href="<?php echo $wo['googleLoginUrl']?>" class="btn btn-social-icon btn-google">
+      <i class="fa fa-google"></i>
+      </a>
+      <?php endif; ?>
+      <?php if($wo['config']['twitterLogin'] != 0): ?>
+      <a href="<?php echo $wo['twitterLoginUrl']?>" class="btn btn-social-icon btn-twitter">
+      <i class="fa fa-twitter"></i>
+      </a>
+      <?php endif; ?>
+      <?php if($wo['config']['linkedinLogin'] != 0): ?>
+      <a href="<?php echo $wo['linkedInLoginUrl']?>" class="btn btn-social-icon btn-linkedin">
+      <i class="fa fa-linkedin"></i>
+      </a>
+      <?php endif; ?>
+      <?php if($wo['config']['VkontakteLogin'] != 0): ?>
+      <a href="<?php echo $wo['VkontakteLoginUrl']?>" class="btn btn-social-icon btn-vk">
+      <i class="fa fa-vk"></i>
+      </a>
+      <?php endif; ?>
+      <?php if($wo['config']['instagramLogin'] != 0): ?>
+      <a href="<?php echo $wo['instagramLoginUrl']?>" class="btn btn-social-icon btn-instagram">
+      <i class="fa fa-instagram"></i>
+      </a>
+      <?php endif; ?>
+    </div>
+    <button type="submit">
+    <i class="spinner"></i>
+    <span class="state"><i class="fa fa-sign-in"></i> <?php echo $wo['lang']['login']?></span>
+    </button>
+  </form>
+  <div class="typing-element"></div>
+  <?php echo Wo_LoadPage('footer/welcome');?>
+</div>
+<?php echo Wo_LoadPage('welcome/welcome-users-profiles');?>
+<script>
+var working = false;
+var $this = $('#login');
+var $state = $this.find('button > .state');
+var login_button_text = '<i class="fa fa-sign-in"></i> <?php echo $wo['lang']['login']?>';
+$(function() {
+  $('#login').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=login',
+    beforeSend: function() {
+      working = true;
+      $this.addClass('loading');
+      $state.html('<?php echo $wo['lang']['authenticating'] ?>');
+    },
+    success: function(data) {
+      if (data.status == 200 || data.status == 600) {
+      	$this.addClass('ok');
+        $state.html('<?php echo $wo['lang']['welcome_back'] ?>');
+        setTimeout(function () {
+        	window.location.href = data.location;
+        }, 1000);
+      } else {
+        var errors = data.errors.join("<br>");
+        $state.html(login_button_text);
+        $this.removeClass('ok loading', function () {
+        	$state.html(errors);
+        });
+      } 
+      working = false;
+    }
+  });
+  $('#login input').on('click', function(e) {
+  	$state.html(login_button_text);
+  });
+});
+</script>
+<script>
+  $(function(){
+      $(".typing-element").typed({
+        strings: ["<?php echo $wo['lang']['connect_with_people'] ?> <span class='typed-cursor'>|</span>", "<?php echo $wo['lang']['make_new_friends'] ?> <span class='typed-cursor'>|</span>", "<?php echo $wo['lang']['share_your_memories'] ?> <span class='typed-cursor'>|</span>", "<?php echo $wo['lang']['create_new_relationships'] ?> <span class='typed-cursor'>|</span>", "<?php echo $wo['lang']['discover_new_places'] ?> <span class='typed-cursor'>|</span>"],
+        typeSpeed: 0,
+        startDelay: 1000,
+        backDelay: 2500,
+        shuffle: false,
+        cursorChar: "",
+      });
+  });
+</script>

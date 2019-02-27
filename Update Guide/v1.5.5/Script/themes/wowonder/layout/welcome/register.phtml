@@ -1,0 +1,90 @@
+<?php 
+echo Wo_LoadPage('welcome/welcome-header');
+$fields = Wo_GetWelcomeFileds();
+?>
+<div class="wrapper">
+ <?php echo Wo_LoadPage('welcome/welcome-header-logo');?>
+  <form class="login" id="register" method="post">
+    <p class="title"><?php echo $wo['lang']['sign_up']?></p>
+    <input name="username" type="text" placeholder="<?php echo $wo['lang']['username'];?>" autofocus/>
+    <i class="fa fa-user"></i>
+    <input name="email" type="text" placeholder="<?php echo $wo['lang']['email_address'];?>" />
+    <i class="fa fa-envelope-o"></i>
+    <?php if($wo['config']['sms_or_email'] == 'sms') {?>
+    <input name="phone_num" type="text" placeholder="<?php echo $wo['lang']['phone_num_ex'];?>" />
+    <i class="fa fa-phone"></i>
+    <?php } ?>
+    <input name="password" type="password" placeholder="<?php echo $wo['lang']['password'];?>" />
+    <i class="fa fa-key"></i>
+    <input name="confirm_password" type="password" placeholder="<?php echo $wo['lang']['confirm_password'];?>" />
+    <i class="fa fa-key"></i>
+    <?php 
+    if (!empty($fields) && count($fields) > 0) {
+      foreach ($fields as $key => $wo['field']) {
+        echo Wo_LoadPage('welcome/fields');
+      }
+    }
+    ?>
+    <select name="gender" id="gender" class="form-control">
+      <option value="male"><?php echo $wo['lang']['male'];?></option>
+      <option value="female"><?php echo $wo['lang']['female'];?></option>
+    </select>
+   
+    <?php if($wo['config']['reCaptcha'] == 1) {?>
+    <div class="form-group" style="margin-top:10px;">
+      <div class="g-recaptcha" data-sitekey="<?php echo $wo['config']['reCaptchaKey']?>"></div>
+    </div>
+    <?php } ?>
+    <?php if(!empty( $_GET['last_url'])){?>
+    <div class="form-group">
+      <input type="hidden" name="last_url" value="<?php echo urldecode(Wo_Secure($_GET['last_url']));?>">
+    </div>
+    <?php } ?>
+    <p class="terms"><?php echo $wo['lang']['terms_agreement'] ?> <Br><a href="<?php echo Wo_SeoLink('index.php?link1=terms&type=terms');?>"><?php echo $wo['lang']['terms_of_use'] ?></a></p>
+    <button>
+    <i class="spinner"></i>
+    <span class="state"><i class="fa fa-sign-in"></i> <?php echo $wo['lang']['lets_go'];?></span>
+    </button>
+    <?php if (isset($_GET['invite'])): ?>
+      <input type="text" class="hidden" value="<?php echo $_GET['invite']; ?>" name="invited">
+    <?php endif; ?>
+  </form>
+  <?php echo Wo_LoadPage('footer/welcome');?>
+</div>
+<?php echo Wo_LoadPage('welcome/welcome-users-profiles');?>
+<script>
+var working = false;
+var $this = $('#register');
+var $state = $this.find('button > .state');
+var register_button_text = "<i class='fa fa-sign-in'></i> <?php echo $wo['lang']['lets_go']?>";
+$(function() {
+  $this.ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=register',
+    beforeSend: function() {
+      working = true;
+      $this.addClass('loading');
+      $state.html('<?php echo $wo['lang']['please_wait'] ?>');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        $this.addClass('ok');
+        $state.html('<?php echo $wo['lang']['welcome_'] ?>');
+        setTimeout(function () {
+         window.location.href = data.location;
+        }, 1000);
+      } else if (data.status == 300) {
+        window.location.href = data.location;
+      } else {
+        $state.html(register_button_text);
+        $this.removeClass('ok loading', function () {
+         $state.html(data.errors);
+        });
+      } 
+      working = false;
+    }
+  });
+  $('#register input').on('click', function(e) {
+   $state.html(register_button_text);
+  });
+});
+</script>

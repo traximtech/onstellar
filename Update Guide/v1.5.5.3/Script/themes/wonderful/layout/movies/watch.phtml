@@ -1,0 +1,497 @@
+<?php 
+$sql = mysqli_query($wo['sqlConnect'], "UPDATE " . T_MOVIES. " SET `views` = `views` + 1 WHERE `id` = '" . $wo['movie']['id'] . "'");
+?>
+ <div class="container-fluid">
+	<div class="row">
+		<ul class="breadcrumb watch-film-top-nav hidden-xs">
+		    <li><a href="<?php echo $wo['site_url']; ?>"><i class="fa fa-home"></i> <?php echo $wo['config']['siteName'] ?></a></li>
+		    <li>
+			    <a href="<?php echo Wo_SeoLink('index.php?link1=movies') ?>">
+			    <?php echo $wo['lang']['movies']; ?>
+			    </a>
+		    </li>
+		    <li><?php echo ucfirst($wo['movie']['genre']); ?></li>
+		    <li class="main"><?php echo ucfirst($wo['movie']['name']); ?></li>
+		</ul>
+		<div class="film-player-wrapper">
+      <?php if (!empty($wo['movie']['source'])): ?>
+			<div class="video-js-responsive-container vjs-hd">
+			<video class="video-js vjs-big-play-centered" controls preload="auto" style="width: 100%; height: 100%;">
+			    <source src="<?php echo $wo['movie']['source']; ?>" type='video/mp4'>
+			    <source src="<?php echo $wo['movie']['source']; ?>" type='video/webm'> 
+			</video>
+			</div>	
+
+      <?php elseif(!empty($wo['movie']['iframe'])): ?>
+        <iframe src="<?php echo $wo['movie']['iframe']; ?>" frameborder="0"></iframe>
+      <?php else: ?>
+        <div class="video-js-responsive-container vjs-hd">
+        <video style="width: 100%; height: 100%;" class="video-js vjs-big-play-centered" controls preload="auto">
+            <source src="<?php echo $wo['movie']['video']; ?>" type='video/mp4'>
+            <source src="<?php echo $wo['movie']['video']; ?>" type='video/webm'> 
+        </video>
+        </div>  
+        
+      <?php endif; ?>
+		</div>
+		<div>
+			<div class="played-film-description-wrapper">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<div class="played-film-description hidden-xs">
+						<div class="played-film-image-wrap">
+							<img alt="<?php echo $wo['movie']['name']; ?>" title="<?php echo $wo['movie']['name']; ?>" src="<?php echo $wo['movie']['cover']; ?>" class="responsive-img">
+						</div>
+						<div class="played-film-meta">
+							<h3><?php echo $wo['movie']['name']; ?> <small>(<?php echo $wo['movie']['release']; ?>)</small></h3>
+							<p class="time"><i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo $wo['movie']['duration']; ?> min</p>
+							<p class="share-film">
+							<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $wo['movie']['url']; ?>" target="_blank">
+								<i class="fa fa-facebook-official" aria-hidden="true"></i>
+							</a>
+							<a href="https://twitter.com/intent/tweet?text=<?php echo $wo['movie']['url']; ?>" target="_blank">
+								<i class="fa fa-twitter-square" aria-hidden="true"></i>
+							</a>
+							<a href="https://plus.google.com/share?url=<?php echo $wo['movie']['url']; ?>" target="_blank">
+								<i class="fa fa-google-plus-square" aria-hidden="true"></i>
+							</a>
+							</p>
+							<p class="about-film"><?php echo $wo['movie']['description']; ?></p>
+							<?php if (strlen($wo['movie']['description']) > 245): ?>
+							<div class="slide-film-desc">
+								<span><?php echo $wo['lang']['more']; ?></span>
+							</div>
+							<?php endif; ?>
+							
+							<div class="played-film-details">
+							<ul class="col-md-6">
+								<li>
+									<p>
+									<span class="m-mata-tag"><?php echo $wo['lang']['genre']; ?>:</span>
+									<span class="main"><?php echo $wo['movie']['genre']; ?></span>
+									</p>
+								</li>
+								<li>
+									<p>
+										<span class="m-mata-tag"><?php echo $wo['lang']['stars']; ?>:</span>
+										<span class="main"><?php echo $wo['movie']['stars']; ?></span>
+									</p>
+								</li>
+								<li>
+									<p>
+										<span class="m-mata-tag"><?php echo $wo['lang']['producer']; ?>:</span>
+										<span class="main"><?php echo $wo['movie']['producer']; ?></span>
+									</p>
+								</li>
+
+							</ul>
+							<ul class="col-md-6">
+
+							<li>
+								<p>
+									<span class="m-mata-tag"><?php echo $wo['lang']['release']; ?>:</span>
+									<span class="main"><?php echo $wo['movie']['release']; ?></span>
+								</p>
+							</li>
+							<li>
+								<p>
+									<span class="m-mata-tag"><?php echo $wo['lang']['quality']; ?>:</span>
+									<span class="badge"><?php echo strtoupper($wo['movie']['quality']); ?></span>
+								</p>
+							</li>
+							<li>
+								<p>
+									<span class="m-mata-tag"><?php echo $wo['lang']['views']; ?>:</span>
+									<span class="main"><?php echo strtoupper($wo['movie']['views']); ?></span>
+								</p>
+							</li>
+
+							</ul>
+							</div>
+							
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="related-movies-container">
+				<div class="col-md-12">
+					<div class="related-movies-wrapper">
+						<h4 class="related-movies"><?php echo $wo['lang']['more_like_this']; ?></h4>
+						<?php if (count($wo['related-films']) > 0): ?>
+							<div class="related-movies-carousel">
+								<?php foreach ($wo['related-films']as $wo['filmInfo']): ?>
+									<?php echo Wo_LoadPage('movies/includes/related-list'); ?>
+								<?php endforeach; ?>
+							</div>
+						<?php else: ?>
+							<?php echo '<h5 class="search-filter-center-text"> '. $wo['lang']['no_movies_found'] .' </h5>';?>
+						<?php endif; ?>
+					</div>
+					<div class="clear"></div>
+					
+				</div>
+				<div class="col-md-12">
+					<div class="movies-com-wrapper" style="margin-bottom: 15px;">
+		              <div class="movies-com-top">
+		                <h4 class="pull-left"><span><?php echo Wo_GetMovieCommentsCount($wo['movie']['id']); ?></span> <?php echo $wo['lang']['comments']; ?></h4>
+		              </div>
+		              <div class="col-md-1 col-sm-1 col-xs-1 movies-com-head pull-left">
+		                <img src="<?php echo $wo['user']['avatar']; ?>" alt="Picture" width='50'>
+		                <div class="clear"></div>
+		              </div>
+		              <div class="movies-com-box col-md-11 col-sm-11 col-xs-11">
+		                <form  class="form">
+		                  <div class="w100">
+		                    <textarea  id="movies-comment" name="text" class="form-control" placeholder="<?php echo $wo['lang']['write_comment'];?>" style="border: 1px solid #ededed;"></textarea>
+		                    <div class="movies-com-box-act">
+		                      <button id="add-movie-comment" class="mdbtn wabe btn pull-right bg-main" type="button">
+		                        <?php echo $wo['lang']['post']; ?>
+		                      </button>
+		                      <button class="mdbtn wabe btn pull-right" type="reset"><?php echo $wo['lang']['cancel']; ?></button>
+		                    </div>
+		                    <br>
+		                    <hr>
+		                  </div>
+		                  <div class="clear"></div>
+		                </form>
+		                <div class="clear"></div>
+
+		              </div>
+		              <div class="movies-comlist-container">
+		                <?php 
+		                  foreach (Wo_GetMovieComments(array('movie_id'=> $wo['movie']['id'])) as $wo['comment']) {
+		                    echo Wo_LoadPage('movies/includes/comments-list');
+		                  }
+		                ?>
+		              </div>
+                  <?php if (count(Wo_GetMovieComments(array('movie_id'=> $wo['movie']['id']))) > 5): ?>
+                    <div class="load-more">
+                      <button class="btn btn-default text-center pointer load-more-movie-comments">
+                      <i class="fa fa-arrow-down progress-icon" data-icon="arrow-down"></i> <?php echo $wo['lang']['load_more'] ?></button>
+                    </div>
+                 <?php endif; ?>
+		            </div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+	</div>
+</div>
+<div id="fb-root"></div>
+<style>
+.ad-placement-header-footer {margin: auto;}
+body {padding-left: 0px;}
+.navbar-default {padding-right: 0px;}
+
+@media (min-width: 1200px){
+body {padding-left: 0px;padding-right: 205px !important;}
+.navbar-default {padding-right: 205px !important;}
+}
+
+@media (min-width: 1500px){
+body {padding-left: 0px;padding-right: 260px !important;}
+}
+
+@media (max-width: 990px) {
+body {padding-left: 0px;overflow-x: auto;}
+}
+</style>
+<?php if($wo['language_type'] == 'rtl') { ?>
+<style>
+@media (min-width: 1024px){
+body {padding-left: 0px !important;padding-right: 0px !important;}
+}
+@media (min-width: 1200px){
+body {padding-left: 0px !important;padding-right: 190px !important;}
+}
+@media (min-width: 1500px){
+body {padding-left: 0px !important;padding-right: 260px !important;}
+}
+</style>
+<?php } ?>
+<script>
+jQuery(document).ready(function($) {
+
+  $(".load-more-movie-comments").click(function(event) {
+    var self    = $(this);
+    var last_id = 0;
+    if ($("div[data-movies-comment]").length > 0) {
+      last_id = $("div[data-movies-comment]").last().attr('data-movies-comment');
+    }
+    $.ajax({
+      url: Wo_Ajax_Requests_File(),
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        f:'movies',
+        s:'load-comments',
+        offset:last_id,
+        m_id:<?php echo $wo['movie']['id']; ?>
+      },
+    }).done(function(data) {
+      if (data.status == 200) {
+        $(".movies-comlist-container").append(data.html);
+      }
+      else if(data.status == 404){
+        self.text(data.html);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  });
+
+
+  $(".related-movies-carousel").owlCarousel({
+		loop:false,
+		margin:15,
+		responsive:{
+				0:{
+						items:2,
+
+				},
+				520:{
+						items:3,
+				},
+				560:{
+						items:4,
+				},
+				768:{
+						items:5,
+				},
+				992:{
+						items:6,
+				},
+				1200:{
+						items:6,
+				}
+		}
+  });
+	
+  $('.slide-film-desc').click(function(event) {
+	$('.about-film').toggleClass('unsetheight');
+  });
+
+  $(document).on('keydown', 'textarea', function(event) {
+    $('textarea').autogrow({vertical: true, horizontal: false});
+  });
+
+  $("#movies-comment").focus(function(event) {
+   $(this).css('height', '80px');
+  });
+
+
+  $(document).on('click', ".del-movies-comment",function() {
+    var  self = $(this);
+    $.ajax({
+      type: "GET",
+      url: Wo_Ajax_Requests_File(),
+      data: {
+      	f:'movies',
+      	id: self.attr("id"),
+        s:'del-movie-comment',
+      	m_id:<?php echo $wo['movie']['id']; ?>
+      },
+      dataType:'json',
+      success: function(data) {
+         if(data['status'] == 200){
+            $("div[data-movies-comment='"+ self.attr('id') +"']").slideUp(function(){
+              $(".movies-com-top h4 span").text(data.comments);
+              $(this).remove();
+            })
+         }
+      }
+    });   
+  });
+
+  $(document).on('click', ".del-movies-commreplies",function() {
+    var  self = $(this);
+    $.ajax({
+      type: "GET",
+      url: Wo_Ajax_Requests_File(),
+      data: {
+      	f:'movies',
+      	id:self.attr("id"),
+      	s:'del-movie-commreplies',
+        m_id:<?php echo $wo['movie']['id']; ?>
+      },
+      dataType:'json',
+      success: function(data) {
+         if(data['status'] == 200){
+            $("div[data-movies-comment-reply='"+ self.attr('id') +"']").slideUp(function(){
+              var comments = Number($(".movies-com-top h4 span").text());
+              $(".movies-com-top h4 span").text(comments -= 1);
+              $(this).remove();
+            })
+         }
+      }
+    });   
+  });
+
+  $(document).on('click', ".reply-tomoviecomm-reply",function() {
+    $('.movies-comment-reply-box').each(function(index, el) {
+      $(el).addClass('hidden');
+    });
+    var  self = $(this);
+    var name  = $("div[data-movies-comment-reply='"+self.attr('id')+"']").find('a b').text();
+    $("div[data-movies-comment='"+self.attr('data-movies-commId')+"']").find('.movies-comment-reply-box').removeClass('hidden').find('textarea').val(name +": ");
+  });
+
+  $(document).on('click', ".reply-tomovie-comm",function() {
+    $('.movies-comment-reply-box').each(function(index, el) {
+      $(el).addClass('hidden');
+    });
+    var  self = $(this);
+    $("div[data-movies-comment='"+self.attr('id')+"']").find('.movies-comment-reply-box').toggleClass('hidden').find('textarea').val('');
+    
+  });
+
+  $("#add-movie-comment").click(function(event) {
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=movies&s=add-movie-comm',
+      type: 'POST',
+      dataType: 'json',
+      data: {text:$("#movies-comment").val(),movie:<?php echo $wo['movie']['id']; ?>},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+        $("#movies-comment").val('');
+        $(".movies-comlist-container").append(data.html);
+        $(".movies-com-top h4 span").text(data.comments);
+      }
+    })
+    .fail(function() {
+      console.log("Something went wrong. Try again later");
+    })    
+  });
+
+});
+
+
+//functions
+function Wo_AddMovieCommentLike(id){
+  if (!id) {
+    return false;
+  }
+  var comment_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=movies&s=add-movie-commlikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:comment_id,m_id:<?php echo $wo['movie']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-movies-comlikes='"+comment_id+"']").text(data.likes);
+        $("span[data-movies-comdislikes='"+comment_id+"']").text(data.dislikes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0); 
+}
+
+function Wo_AddMovieCommentDisLike(id){
+  if (!id) {
+    return false;
+  }
+  var comment_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=movies&s=add-movie-commdislikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:comment_id,m_id:<?php echo $wo['movie']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-movies-comlikes='"+comment_id+"']").text(data.likes);
+        $("span[data-movies-comdislikes='"+comment_id+"']").text(data.dislikes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0); 
+}
+
+function Wo_AddMovieCommReplyLike(id){
+  if (!id) {
+    return false;
+  }
+  var reply_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=movies&s=add-movie-crlikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:reply_id,m_id:<?php echo $wo['movie']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-movies-comrlikes='"+reply_id+"']").text(data.likes);
+        $("span[data-movies-comrdislikes='"+reply_id+"']").text(data.dislikes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0);
+  
+}
+
+function Wo_AddMovieCommReplyDisLike(id){
+  if (!id) {
+    return false;
+  }
+  var reply_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=movies&s=add-movie-crdislikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:reply_id,m_id:<?php echo $wo['movie']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-movies-comrlikes='"+reply_id+"']").text(data.likes);
+        $("span[data-movies-comrdislikes='"+reply_id+"']").text(data.dislikes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0);
+  
+}
+
+function Wo_RegisterMovieCommReply(id,event,self){
+  if (event.keyCode==13&&event.shiftKey==0&&event&&id&&self) {
+    var text = self.value;
+    if (text.length >= 2) {
+      $.ajax({
+        url: Wo_Ajax_Requests_File() + '?f=movies&s=add-movie-commreply',
+        type: 'POST',
+        dataType: 'json',
+        data: {c_id:id,text:text,m_id:<?php echo $wo['movie']['id']; ?>},
+      }).done(function(data) {
+        if (data.status == 200) {
+          $("div[data-movies-comment='"+id+"']").find('.movies-comment-reply-cont').append(data.html);
+          $(".movies-com-top h4 span").text(data.comments);
+          self.value = '';
+        }
+      }).fail(function() {
+        console.log("Something went wrong. Try again later");
+      })     
+    }
+  }
+
+}
+</script>
+
+<style>
+.watch-film-top-nav {padding-left: 0;margin-bottom: 0;border-radius: 0;border-top-right-radius: 3px;border-top-left-radius: 3px;margin-top: 15px;padding: 10px;box-shadow: 0 1px 0 0 #e3e4e8, 0 0 0 1px #f1f1f1;}
+body {padding-left: 0px;}
+.navbar-default {padding-right: 0px;}
+@media (min-width: 1200px){
+body {padding-left: 0px;padding-right: 0px;}
+.navbar-default {padding-right: 0px;}
+}
+@media (max-width: 990px) {
+body {padding-left: 0px;overflow-x: auto;}
+}
+</style>

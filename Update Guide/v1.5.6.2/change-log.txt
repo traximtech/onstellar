@@ -1,0 +1,6 @@
+Change-log:
+
+[Added] New welcome page for the default theme.
+[Added] Wasabi storage support.
+[Upgraded] PHPMailer to v6.
+Fixed 10+ reported bugs.

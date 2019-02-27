@@ -1,0 +1,27 @@
+﻿WoWonder v1.5.5.1 Update Documentation
+
+Note:
+
+This update is just for who is using 1.5.5, if you're still using older verisons, PLEASE UPDATE the script version by version.
+
+// ------------------------------------- //
+
+1) How To Update
+
+- BACKUP, BACKUP, AND BACKUP everything, files, DATABASE.
+
+- Upload and overwrite ALL files/folders (SELECT ALL) file(s) located inside "Update Guide/v1.5.5.1/Script/" folder to your server.
+
+- For more information on how to update your site, please read our FAQ https://docs.wowonder.com/faqs.html#a-234234
+
+// ------------------------------------- //
+
+if you're facing any problems, please contact me so i can help.
+
+Created: 11/23/2015
+Last Update: 03/29/2018
+By: Deen Doughouz (DoughouzForest)
+Email: wowondersocial@gmail.com
+Website: http://www.wowonder.com
+
+Copyright © 2018 WoWonder - The Ultimate Social Networking Platform. All rights reserved.

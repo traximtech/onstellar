@@ -1,0 +1,22 @@
+<span onclick="Wo_RegisterLike(<?php echo $wo['story']['id']; ?>);" id="like-button" class="btn btn-default stat-item" title="<?php echo $wo['lang']['like'];?>">
+<?php
+$second_btn_wonder = ($wo['config']['second_post_button'] == 'dislike') ? $wo['lang']['dislike'] : $wo['lang']['wonder'];
+$second_btn_wondered = ($wo['config']['second_post_button'] == 'dislike') ? $wo['lang']['disliked'] : $wo['lang']['wondered'];
+if ($wo['story']['is_liked'] === true) {    
+  echo '<span class="active-like"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ' . $wo['lang']['liked'] . '</span>';   
+} else {   
+  echo '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ' . $wo['lang']['like'];   
+}    
+?>
+</span>
+<?php if ($wo['config']['second_post_button'] != 'disabled') { ?>
+<span onclick="Wo_RegisterWonder(<?php echo $wo['story']['id']; ?>);" id="wonder-button" class="btn btn-default stat-item" title="<?php echo $wo['second_post_button_text'];?>">
+<?php 
+if ($wo['story']['is_wondered'] === true) {  
+  echo '<span class="active-wonder">' . $wo['second_post_button_icon'] . '<span class="like-btn-mobile">' . $second_btn_wondered . '</span></span>'; 
+} else {    
+  echo '' . $wo['second_post_button_icon'] . ' <span class="like-btn-mobile">' . $second_btn_wonder . '</span>';
+}
+?>          
+</span>
+<?php } ?>

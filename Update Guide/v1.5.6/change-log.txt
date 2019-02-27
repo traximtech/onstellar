@@ -1,0 +1,13 @@
+Change-log:
+
+1. [Added] FTP client server to store files, images, videos on other servers.
+2. [Added] GDPR compliance (cookie frame, checkboxes, privacy policy)
+3. [Added] full new APIv2 + docs.
+4. [Added] the ability to edit movies from admin panel.
+5. [Added] the abilty to post mobile emojies on posts, comments, and messages.
+6. [Added] Auto delete system for users and posts that are longer than X date.
+7. [Added] Crop system for user avatar.
+8. Translated all page's titles.
+9. Improved load post speed on wonderful theme.
+10. Fixed 3 security issues.
+11. Fixed 49+ reported bugs.

@@ -1,0 +1,97 @@
+<?php 
+$query = $wo['story']['id'];
+$image = Wo_GetMedia($wo['story']['postFile']);
+if (strpos($wo['story']['postFile'],',') !== false) {
+    $explode = @explode(',', $wo['story']['postFile']);
+    $image = Wo_GetMedia($explode[0]);
+}
+?>
+<div class="lightbox-backgrond" onclick="Wo_CloseLightbox();"></div>
+<div class="lightbox-content post" id="post-<?php echo $wo['story']['id'];?>" data-post-id="<?php echo $wo['story']['id'];?>">
+	<div class="story-img" style="position:relative">
+		<img src="<?php echo $image;?>" alt="media">
+		<span class="changer previous-btn" onclick="Wo_PreviousPicture(<?php echo $query;?>);">
+			<i class="zmdi zmdi-chevron-left"></i>
+		</span>
+		<span class="changer next-btn multi" onclick="Wo_NextPicture(<?php echo $query;?>);">
+			<i class="zmdi zmdi-chevron-right"></i>
+		</span>
+		<a class="changer album-img-dwn" href="<?php echo $image;?>" download style="left: 52%;transform: translate(-52%,5%);top: auto;bottom: 5%;width: 41px;"><i class="zmdi zmdi-download" style="font-size:22px"></i></a>
+		<a class="changer album-img-dwn" href="<?php echo $image;?>" target="_blank" style="left: 44%;transform: translate(-44%,5%);top: auto;bottom: 5%;width: 41px;"><i class="zmdi zmdi-open-in-new" style="font-size:22px"></i></a>
+	</div>
+	<div class="comment-section">
+		<div class="<?php echo Wo_RightToLeft('pull-right');?> close-lightbox" onclick="Wo_CloseLightbox();">
+			<i class="zmdi zmdi-close" style="font-size: 18px;font-weight: bold;"></i>
+		</div>
+		<div class="user-avatar <?php echo Wo_RightToLeft('pull-left');?>">
+			<img src="<?php echo $wo['story']['publisher']['avatar'];?>" alt="">
+		</div>
+		<div class="user-name h5">
+			<span class="user-popover" data-type="<?php echo $wo['story']['publisher']['type']; ?>" data-id="<?php echo $wo['story']['publisher']['id']; ?>">
+				<a href="<?php echo $wo['story']['publisher']['url'];?>" class="bold"><?php echo $wo['story']['publisher']['name'];?></a>
+			</span>
+		</div>
+		<h6>
+			<div class="time" style="color:#9197a3">
+				<span class="ajax-time" title="<?php echo date('c',$wo['story']['time']); ?>">
+				<?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?> 
+				</span>
+			</div>
+		</h6>
+		<div class="clear"></div>
+		<div class="post-info">
+			<div class="post-text">
+				<p><?php echo $wo['story']['postText'];?> </p>
+			</div>
+		</div>
+		<div class="stats buttons" style="height: 40px;">
+			<?php if ($wo['loggedin'] == true) { echo Wo_LoadPage('buttons/like-wonder');}?>
+		</div>
+		<div class="lightbox-post-footer post-comments" id="post-comments-<?php echo $wo['story']['id'];?>">
+			<div class="post-commet-textarea dropdown">
+				<input class="form-control lighbox comment-textarea textarea" placeholder="<?php echo $wo['lang']['write_comment'];?>" type="text" onkeydown="Wo_RegisterComment(this.value,<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)" onkeyup="textAreaAdjust(this, 30,'comm')" dir="auto" style="border-radius: 16px !important;">
+				<span class="input-group-btn emo-comment dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" >
+					<span class="btn btn-file">
+						<i class="zmdi zmdi-mood" style="font-size: 19px;"></i>
+					</span>
+				</span>
+				<div class="emo-post-container dropdown-menu" role="menu" style="overflow-y: scroll;height: 100px;">
+					<?php  
+					foreach ($wo['emo'] as $code => $name) {
+					$code   = $code;
+					echo  '<span onclick="Wo_AddEmoToCommentInput(' . $wo["story"]["id"] . ', \'' . $code . '\', \'lightbox-post-footer\');"><i class="pointer twa-lg twa twa-' . $name . '"></i></span>'; 
+					} 
+					?>
+				</div>
+			</div>
+			<div id="hidden_inputbox_comment_lighbox"></div>
+			<div class="comments-list">
+				<span class="comment-container"></span>
+				<?php 
+				foreach($wo['story']['get_post_comments'] as $wo['comment']) {
+				echo Wo_LoadPage('comment/lightbox-content');
+				}
+				?>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<script>
+$( ".story-img" ).mouseover(function() {
+  $( ".changer" ).fadeIn(200);
+});
+$( ".story-img" ).mouseleave(function() {
+  $( ".changer" ).fadeOut(200);
+});
+$(document).keydown(function(e) {
+    if (e.keyCode == 27) {
+        Wo_CloseLightbox();
+    }
+    $(".lighbox.textarea").triggeredAutocomplete({
+       hidden: '#hidden_inputbox_comment_lighbox',
+       source: Wo_Ajax_Requests_File() + "?f=mention",
+       trigger: "@" 
+    });
+});
+</script>

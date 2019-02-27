@@ -1,0 +1,121 @@
+<?php echo Wo_LoadPage("events/includes/header"); ?>
+    <div class="setting-well-p" style="background-color: #fff;">
+      <div class="setting-general-alert setting-update-alert" id="event-alert"></div>
+      <form  class="form form-horizontal" method="post" id="update-event" >
+        
+        <div class="form-group">
+          <label class="col-sm-3" for="event-name"><?php echo $wo['lang']['name']; ?>:</label>  
+          <div class="col-md-9">
+             <input name="event-name" id="event-name" type="text" class="form-control" value="<?php echo $wo['event']['name']; ?>"> 
+          </div>
+       </div>
+      <div class="form-group">
+          <label class="col-sm-3" for="event-locat"><?php echo $wo['lang']['location']; ?>:</label>  
+          <div class="col-md-9">
+             <input id="event-locat" name="event-locat"  type="text" class="form-control" value="<?php echo $wo['event']['location']; ?>"> 
+          </div>
+          
+       </div>
+       <div class="form-group" id="review-location">
+          <div class="col-sm-3"></div>
+          <div class="col-md-9" id="place">
+             <iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=<?php echo $wo['event']['location']; ?>&language=en"></iframe>
+          </div>
+
+       </div>
+
+       <div class="form-group">
+          <label class="col-sm-3" for="event-start"><?php echo $wo['lang']['start_date']; ?>:</label>  
+          <div class="col-md-4">
+             <input type="text" class="form-control date" id="event-start" name="event-start-date" value="<?php echo $wo['event']['start_date']; ?>">
+          </div>
+          <div class="col-md-5">
+             <input type="text" class="form-control time1" name="event-start-time" value="<?php echo $wo['event']['start_time']; ?>">
+          </div>
+       </div>
+       <div class="form-group">
+          <label class="col-sm-3" for="event-end-date"><?php echo $wo['lang']['end_date']; ?>:</label>  
+          <div class="col-md-4">
+             <input type="text" class="form-control date1" name="event-end-date" id="event-end-date" value="<?php echo $wo['event']['end_edit_date']; ?>">
+          </div>
+          <div class="col-md-5">
+             <input type="text" class="form-control time1" name="event-end-time" value="<?php echo $wo['event']['start_time']; ?>">
+          </div>
+       </div>
+
+
+       <div class="form-group">
+          <label class="col-sm-3" for="event-description"><?php echo $wo['lang']['description'] ?>:</label>  
+          <div class="col-md-9">
+             <textarea name="event-description" id="event-description" class="form-control" rows="5"><?php echo $wo['event']['description']; ?></textarea>
+          </div>
+       </div>
+
+       <div class="form-group">
+          <label class="col-sm-3" for="event-description"><?php echo $wo['lang']['cover'] ?>:</label>  
+          <div class="col-md-9">
+             <div class="main pointer" id="select-cover">
+                <img src="<?php echo $wo['event']['cover']; ?>" alt="<?php echo $wo['event']['name']; ?>">  
+             </div>
+          </div>
+       </div>
+  
+      <div class="form-group last-btn">
+          <label class="col-sm-3"></label>
+          <div class="col-sm-9">
+             <div class="row">
+               <button type="submit" class="wabe mdbtn btn btn-main">
+                <i class="fa fa-upload progress-icon" data-icon="upload"></i> <?php echo $wo['lang']['save']; ?>
+             </button>
+             </div>
+          </div>
+       </div>
+      <input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+      <input type="file" name="event-cover" class="hidden" id="event-cover">
+      </form>
+    </div>
+<?php echo Wo_LoadPage('events/includes/footer');?>
+<script src="https://cdn.jsdelivr.net/npm/jquery-ui-timepicker-addon@1.6.3/dist/jquery-ui-timepicker-addon.min.js"></script>
+<script>
+  jQuery(document).ready(function($) {
+      $( ".date" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today'});
+      $( ".date1" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: '+1day'});
+      $( ".time1" ).timepicker();
+      $("#select-cover").click(function(event) {
+        $("#event-cover").click()
+      });
+
+      $("#event-locat").change(function(event) {
+        if ($(this).val().length >= 3) {
+          $("#review-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=' + $("#event-locat").val() + '&language=en"></iframe>')
+        }else{
+          $("#review-location #place").html('<iframe width="100%" frameborder="0" style="border:0;margin-top: 10px;" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=us&language=en"></iframe>')
+        }
+      });
+
+
+
+      $("#event-cover").change(function(event) {
+        $("#select-cover").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>")
+      });
+
+      $('#update-event').ajaxForm({
+            url: Wo_Ajax_Requests_File() + '?f=update-event&eid=<?php echo $wo['event']['id']; ?>',
+            beforeSend: function() {
+              Wo_progressIconLoader($('#update-event').find('button'));
+            },
+            success: function(data) {
+              scrollToTop();
+              if (data['status'] == 200) {
+                $("#event-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+                window.location = data['url'];
+              } else if (data['message']) {
+                $("#event-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+              } 
+              Wo_progressIconLoader($('#update-event').find('button'));
+            }
+      });
+       
+  });
+
+</script>

@@ -1,0 +1,7 @@
+Change-log:
+
+[Added] Day status to default theme (good morning etc).
+[Improved] wonderful theme desgin and forms.
+[Improved] publisher box stability.
+[Removed] Weather plugin from wonderful theme due copyright issues.
+Fixed 10+ reported bugs.

@@ -1,0 +1,3 @@
+Change-log:
+
+Fixed facebook / google login issues.

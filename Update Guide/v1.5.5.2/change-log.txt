@@ -1,0 +1,4 @@
+Change-log:
+
+Improved speed 50%
+Fixed bugs

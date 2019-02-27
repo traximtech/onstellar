@@ -1,0 +1,335 @@
+<div class="chat-wrapper chat_<?php echo $wo['chat']['recipient']['user_id'];?>" id="chat_<?php echo $wo['chat']['recipient']['user_id'];?>">
+	<div style="background:<?php echo $wo['chat']['color']; ?>;overflow: hidden;" class="online-toggle pointer" onclick="javascript:$('.chat-tab-container-<?php echo $wo['chat']['recipient']['user_id'];?>').slideToggle(100);">
+		<a style="color:#fff;" href="<?php echo $wo['chat']['recipient']['url'];?>"> 
+			<span class="chat-tab-status <?php echo (Wo_IsOnline($wo['chat']['recipient']['user_id']) === true) ? 'active' : ''; ?>">
+				<i class="fa fa-circle fa-fw"></i>
+			</span>
+			<?php if (strlen($wo['chat']['recipient']['name']) > 15):?>
+				<?php echo mb_substr($wo['chat']['recipient']['name'],0,15,"UTF-8") . ".."; ?>
+				<?php else:?>
+				<?php echo $wo['chat']['recipient']['name']; ?>
+			<?php endif;?>
+		</a>
+	  
+      <span class="<?php echo Wo_RightToLeft('pull-right');?> close-chat">
+      <?php if ($wo['config']['audio_chat'] == 1) { ?>
+      <?php if ($wo['chat']['recipient']['lastseen'] > (time() - 60)) { ?>
+      <i class="zmdi zmdi-phone" style="font-size: 18px;margin-top: -4px;" title="Call" onclick="Wo_GenerateVoiceCall(<?php echo $wo['user']['user_id'];?>, <?php echo $wo['chat']['recipient']['user_id'];?>)"></i>&nbsp;
+      <?php } else { ?>
+      <i class="zmdi zmdi-phone" style="color:#999;font-size: 18px;margin-top: -4px;" title="Not availabe"></i>&nbsp;
+      <?php } } ?>
+      <?php if ($wo['config']['video_chat'] == 1) { ?>
+      <?php if ($wo['chat']['recipient']['lastseen'] > (time() - 60)) { ?>
+      <i class="zmdi zmdi-videocam" style="font-size: 18px;margin-top: -4px;" title="Video Call" onclick="Wo_GenerateVideoCall(<?php echo $wo['user']['user_id'];?>, <?php echo $wo['chat']['recipient']['user_id'];?>)"></i>&nbsp;
+      <?php } else { ?>
+	  <i class="zmdi zmdi-videocam" style="color:#999;font-size: 18px;margin-top: -4px;" title="Not availabe"></i>&nbsp;
+      <?php } } ?>
+      <a class="white" data-ajax="?link1=messages&user=<?php echo $wo['chat']['recipient']['user_id'];?>" href="<?php echo Wo_SeoLink("index.php?link1=messages&user=" . $wo['chat']['recipient']['user_id']);?>">
+      <i class="zmdi zmdi-open-in-new" style="font-size: 18px;margin-top: -4px;" title="Open in New Tab"></i>&nbsp;
+      </a>
+	  <i class="zmdi zmdi-close" style="font-size: 18px;margin-top: -4px;" title="Close" onclick="Wo_CloseChat(<?php echo $wo['chat']['recipient']['user_id'];?>);"></i>
+      </span>
+   </div>
+
+   <div class="chat-tab-container chat-tab-container-<?php echo $wo['chat']['recipient']['user_id'];?> chat-tab-box-<?php echo $wo['chat']['recipient']['user_id'];?>">
+      <div class="chat-messages-wrapper chat-messages-wrapper-<?php echo $wo['chat']['recipient']['user_id'];?>">
+         <div class="chat-messages">
+           <div class="chat-user-desc">
+             <div class="row">
+                <div class="col-sm-4">
+                  <img src="<?php echo $wo['chat']['recipient']['avatar'];?>" alt="User avatar">
+                </div>
+                <div class="col-sm-8">
+                  <div class="text">
+                    <span class="head-text">
+                    <?php $is_following = Wo_IsFollowing($wo['chat']['recipient']['user_id'], $wo['user']['user_id']);?>
+                    <?php if ($wo['config']['connectivitySystem'] == 0) { ?>
+                      <?php if ($is_following) { ?>
+                         <?php echo $wo['lang']['your_following'];?> <?php echo $wo['chat']['recipient']['name'];?>
+                      <?php } ?>
+                    <?php } else { ?>
+                      <?php 
+                      if ($is_following) { 
+                        echo $your_friends = str_replace('{site_name}', $wo['config']['siteName'], $wo['lang']['your_friends_chat']);
+                      } 
+                      ?>
+                    <?php } ?>
+                    </span>
+                    <?php 
+                    $country = $wo['chat']['recipient']['country_id'];
+                    if ($country > 0) {
+                    ?>
+                    <div class="desc-text"><i class="fa fa-home fa-fw"></i> <?php echo $wo['lang']['living_in'];?> <?php echo $wo['countries_name'][$country];?></div>
+                    <?php } ?>
+                    <?php 
+                    $working = $wo['chat']['recipient']['working'];
+                    if (!empty($working)) {
+                    ?>
+                    <div class="desc-text"><i class="fa fa-fa fa-briefcase fa-fw"></i> <?php echo $wo['lang']['working_at'];?> <?php echo $working;?></div>
+                    <?php } ?>
+                  </div>
+                </div>  
+             </div>
+           </div>
+         </div>
+
+         <div class="clear"></div>
+      </div>
+      <div class="chat-textarea btn-group">
+         <div class="emo-container emo-container-<?php echo $wo['chat']['recipient']['user_id'];?>" style="overflow-y: scroll; height:100px;">
+            <?php  
+            foreach ($wo['emo'] as $code => $name) {
+              $code   = $code;
+              echo  '<span onclick="Wo_AddEmoToChat(\'' . $code . '\', ' . $wo['chat']['recipient']['user_id'] . ');"><i class="pointer twa-lg twa twa-' . $name . '"></i></span>'; 
+            } 
+            ?>
+         </div>
+
+
+         <form action="#" method="post" class="chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>">
+            <textarea name="textSendMessage" id="sendMessage" class="form-control" cols="10" rows="5" placeholder="<?php echo $wo['lang']['write_something'];?>"  onkeydown="Wo_SubmitChatForm(event, <?php echo $wo['chat']['recipient']['user_id'];?>);" onfocus="Wo_SubmitChatForm(event, <?php echo $wo['chat']['recipient']['user_id'];?>);" dir="auto" style="box-shadow: none;padding-top: 8px;"></textarea>
+
+            <div class="w-10 chat-btns-w" style="padding: 0 10px;">
+            <span>
+              <span class="btn btn-file" id="progressIcon" style="padding: 3px 9px;box-shadow: none;">
+
+              <?php if($wo['config']['fileSharing'] == 1) { ?>
+              <i class="fa fa-file-text-o progress-icon" data-icon="file-text-o"></i>
+              <input type="file" id="sendMessasgeFile" name="sendMessageFile" class="pointer" onchange="Wo_ShareChatFile(<?php echo $wo['chat']['recipient']['user_id'];?>);" />
+              <?php } else { ?>
+              <i class="fa fa-picture-o  progress-icon" data-icon="picture-o"></i>
+              <input type="file" id="sendMessasgeFile" name="sendMessageFile" onchange="Wo_ShareChatFile(<?php echo $wo['chat']['recipient']['user_id'];?>);" accept="image/x-png, image/gif, image/jpeg"  />
+              <?php } ?>
+              </span>
+              
+              <span class="btn btn-file record-chat-audio" style="padding: 3px 9px;box-shadow: none;" data-record="0" data-chat-tab="<?php echo $wo['chat']['recipient']['user_id'];?>">
+                <i class="fa fa-microphone" aria-hidden="true"></i>
+              </span>
+              <span data-chat-rtime="<?php echo $wo['chat']['recipient']['user_id'];?>" class="hidden">00:00</span>
+            </span>
+
+            <span class="emo-btn-<?php echo $wo['chat']['recipient']['user_id'];?>" style="<?php echo Wo_RightToLeft('right');?>:60px;">
+              <span class="btn btn-file" style="padding: 3px 9px;box-shadow: none;">
+                 <i class="fa fa-smile-o progress-icon" data-icon="file-smile-o"></i>
+              </span>
+            </span>
+            <?php if ($wo['config']['stickers'] == 1): ?>
+            <span class="dropup dropdown" id="chat-gifs">
+              <span class="btn btn-file dropdown-toggle" style="padding: 3px 9px;box-shadow: none;"  data-toggle="dropdown" aria-expanded="true" role="button">
+                 <i class="zmdi zmdi-gif" style="font-size: 24px;line-height: 0;"></i>
+              </span>
+              <ul class="dropdown-menu drop-up" role="menu" onclick="event.stopPropagation()" style="left: -75px;">
+                <li>
+                  <div class="w100" id="chat-box-stickers">
+                    <input type="text" class="form-control" placeholder="<?php echo $wo['lang']['search'] ?> GIFs" onkeyup="Wo_GetChatStickers(this.value)">
+                    <div id="chat-box-stickers-cont">
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </span>
+            <?php endif; ?>
+            <span class="dropup dropdown">
+              <span class="btn btn-file dropdown-toggle" style="padding: 3px 9px;box-shadow: none;"  data-toggle="dropdown" aria-expanded="true" role="button">
+                 <i class="fa fa-circle select-color" aria-hidden="true" style="color: <?php echo $wo['chat']['color']; ?>"></i>
+              </span>
+              <ul class="dropdown-menu drop-up" role="menu" style="">
+                <li>
+                  <div class="chat-colors-cont text-center">
+                    <?php foreach ($wo['colors'] as $key => $color) {?>
+                    <a class="chat-color" data-chat-color="<?php echo $color; ?>"  data-recipient-u-id="<?php echo $wo['chat']['recipient']['user_id'];?>" style="color: <?php echo $color; ?>;">
+                      <i class="fa fa-circle" aria-hidden="true"></i>
+                    </a>
+                    <?php } ?>
+                  </div>
+                </li>
+              </ul>
+            </span>
+            </div>
+            <input type="hidden" id="user-id" class="chat-user-id" name="user_id" value="<?php echo $wo['chat']['recipient']['user_id'];?>" />
+            <input type="hidden" id="color" value="<?php echo $wo['chat']['color'];?>" />
+            <input type="hidden" name="message-record" class="message-record" >
+            <input type="hidden" name="media-name" class="media-name" >
+            <input type="hidden" name="chatSticker" id='chatSticker'>
+         </form>
+      </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $(".chat-colors-cont a").click(function(event) {
+      var recipient_id = $(this).attr('data-recipient-u-id');
+      $.ajax({
+        url:  Wo_Ajax_Requests_File(),
+        type: 'get',
+        data:{f:'chat',s:'set-chat-color',color:$(this).attr('data-chat-color'),recipient_user:$(this).attr('data-recipient-u-id')},
+        dataType: 'json',
+        success: function(data){
+          if (data['status'] == 200) {
+             $(".chat_" + recipient_id).find('.online-toggle, .outgoing').css('background', data['color']);
+             $(".chat_" + recipient_id).find('.online-toggle, .outgoing').css('color', '#fff');
+             $(".chat_" + recipient_id).find('.select-color').css('color', data['color']);
+             $(".chat_" + recipient_id).find('#color').val(data['color']);
+             $(".text-sender-container .red-list").css('background', data.color);
+             $(".text-sender-container .btn-file").css('background', data.color);
+             $(".text-sender-container .btn-file").css('border-color', data.color);
+          }
+        }
+      });
+    });
+});
+
+$(function() {
+    var main_hash_id = $('.main_session').val();
+    $('.emo-btn-<?php echo $wo['chat']['recipient']['user_id'];?>').click(function () {
+        $('.emo-container-<?php echo $wo['chat']['recipient']['user_id'];?>').toggle();
+    });
+    var chat_messages_wrapper = $('.chat-messages-wrapper-<?php echo $wo['chat']['recipient']['user_id'];?>');
+    $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').ajaxForm({
+        url: Wo_Ajax_Requests_File() + '?f=chat&s=send_message&hash=' + main_hash_id,
+        beforeSend: function() {
+            if (chat_messages_wrapper.find('.chat-user-desc').length == 1) {
+                chat_messages_wrapper.find('.chat-user-desc').empty();
+            }
+            var text_message = escapeHTML($('.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?> #sendMessage').val());
+            $('.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').attr('disabled', true);
+            var color = $('.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?> #color').val();
+            <?php  if (!empty($wo['chat']['color'])) { ?>
+             var html_message = '<div class="sended_message"><div class="messages-wrapper pull-right messages-text" id="messageId_" data-message-id=""><div class="message outgoing pull-right" style="background: ' + color + ';"><p class="message-text" style="color: #fff" dir="auto">' + text_message + '</p><div class="clear"></div><div class="message-media"></div></div><div class="clear"></div><div class="message-seen text-right message-details"></div><div class="clear"></div><div class="message-typing message-details"></div></div><div class="clear"></div></div>';
+            <?php } else { ?>
+              var html_message = '<div class="sended_message"><div class="messages-wrapper pull-right messages-text" id="messageId_" data-message-id=""><div class="message outgoing pull-right"><p class="message-text" dir="auto">' + text_message + '</p><div class="clear"></div><div class="message-media"></div></div><div class="clear"></div><div class="message-seen text-right message-details"></div><div class="clear"></div><div class="message-typing message-details"></div></div><div class="clear"></div></div>';
+            <?php } ?>
+            if (!text_message && $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('input.message-record').val() == '' && $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#chatSticker').val() == '') {
+              $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#sendMessasgeFile').val('');
+              return false;
+            }
+            $('body').attr('sending-<?php echo $wo['chat']['recipient']['user_id'];?>', true);
+            if (text_message && $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?> #sendMessasgeFile').val() == '') {
+              if (chat_messages_wrapper.length == 0) {
+                chat_messages_wrapper.html(html_message);
+              } else {
+                chat_messages_wrapper.append(html_message);
+              }
+            }
+            setTimeout(function() {
+                  chat_messages_wrapper.scrollTop(chat_messages_wrapper[0].scrollHeight);
+            }, 100);
+            $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').clearForm();
+        },
+        uploadProgress: function () {
+          Wo_progressIconLoader($('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#progressIcon'));
+        },
+        success: function(data) {
+            if (data.status == 200) {
+                chat_messages_wrapper.find("div[class*='message-seen']").empty();
+                chat_messages_wrapper.find("div[class*='message-typing']").empty();
+                chat_messages_wrapper.find(".sended_message:last").html(data.html); 
+                $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('input.message-record').val('');   
+                $('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('input.media-name').val('');
+                $("#chatSticker").val('');
+                $("#chat-gifs").removeClass('open');
+                if (data.invalid_file == 1) {
+                  $("#invalid_file").modal('show');
+                  Wo_Delay(function(){
+                    $("#invalid_file").modal('hide');
+                  },3000);
+                  Wo_progressIconLoader($('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#progressIcon'));
+                }
+                if(data.invalid_file == 2){
+                  $("#file_not_supported").modal('show');
+                  Wo_Delay(function(){
+                    $("#file_not_supported").modal('hide');
+                  },3000);
+                }
+                $('body').attr('sending-<?php echo $wo['chat']['recipient']['user_id'];?>', false);
+                if (data.file == true) {
+                  Wo_progressIconLoader($('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#progressIcon'));
+                }
+                
+            }
+            else if(data.status == 500 && data.invalid_file == 1){
+              $("#invalid_file").modal('show');
+              Wo_Delay(function(){
+                $("#invalid_file").modal('hide');
+              },3000);
+              Wo_progressIconLoader($('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#progressIcon'));
+            }
+            else if(data.status == 500 && data.invalid_file == 2){
+              $("#file_not_supported").modal('show');
+              Wo_Delay(function(){
+                $("#file_not_supported").modal('hide');
+              },3000);
+              Wo_progressIconLoader($('form.chat-sending-form-<?php echo $wo['chat']['recipient']['user_id'];?>').find('#progressIcon'));
+            }
+            setTimeout(function() {
+              chat_messages_wrapper.scrollTop(chat_messages_wrapper[0].scrollHeight);
+            }, 700);
+        }
+    });
+}); 
+function escapeHTML(string) {
+    var pre = document.createElement('pre');
+    var text = document.createTextNode( string );
+    pre.appendChild(text);
+    return pre.innerHTML;
+}
+
+function Wo_ChatSticker(self){
+  if (!self) {
+    return false;
+  }
+  $('#chatSticker').val($(self).attr('data-gif'));
+  Wo_RegisterTabMessage('<?php echo $wo['chat']['recipient']['user_id'];?>');
+}
+
+function Wo_GetChatStickers(keyword = ''){
+  if (!keyword) {
+    return false;
+  }
+  var chat_gif_loading =  '\
+  <div class="sk-circle">\
+    <div class="sk-circle1 sk-child"></div>\
+    <div class="sk-circle2 sk-child"></div>\
+    <div class="sk-circle3 sk-child"></div>\
+    <div class="sk-circle4 sk-child"></div>\
+    <div class="sk-circle5 sk-child"></div>\
+    <div class="sk-circle6 sk-child"></div>\
+    <div class="sk-circle7 sk-child"></div>\
+    <div class="sk-circle8 sk-child"></div>\
+    <div class="sk-circle9 sk-child"></div>\
+    <div class="sk-circle10 sk-child"></div>\
+    <div class="sk-circle11 sk-child"></div>\
+    <div class="sk-circle12 sk-child"></div>\
+  </div>';
+  $('#chat-box-stickers-cont').html(chat_gif_loading);
+  Wo_Delay(function(){
+    $.ajax({
+      url: 'https://api.giphy.com/v1/gifs/search?',
+      type: 'GET',
+      dataType: 'json',
+      data: {q:keyword,api_key:'<?php echo $wo['config']['giphy_api'];?>',limit:15},
+    })
+    .done(function(data) {
+      if (data.meta.status == 200 && data.data.length > 0) {
+        $('#chat-box-stickers-cont').empty();
+        for (var i = 0; i < data.data.length; i++) {
+          appended = true;
+          if (appended == true) {
+              appended = false;
+            $('#chat-box-stickers-cont').append($('<img alt="gif" src="'+data.data[i].images.fixed_height_small.url+'" data-gif="' + data.data[i].images.fixed_height.url + '" onclick="Wo_ChatSticker(this)" autoplay loop>'));
+            appended = true;
+          } 
+        }
+      }
+      else{
+        $('#chat-box-stickers-cont').html('<p class="no_chat_gifs_found"><i class="fa fa-frown-o"></i> <?php echo $wo['lang']['no_result']; ?></p>');
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    })
+  },1000);
+}
+
+</script>

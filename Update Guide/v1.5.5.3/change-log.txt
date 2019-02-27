@@ -1,0 +1,4 @@
+Change-log:
+
+Added video API for mobile applications.
+Fixed reported bugs

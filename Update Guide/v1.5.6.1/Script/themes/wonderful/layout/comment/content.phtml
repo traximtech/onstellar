@@ -1,0 +1,138 @@
+<?php $replies = Wo_CountCommentReplies($wo['comment']['id']);?>
+<div class="comment comment-container" id="comment_<?php echo $wo['comment']['id'];?>" data-comment-id ="<?php echo $wo['comment']['id'];?>">
+	<a onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['comment']['publisher']['id']?>&quot;, &quot;type&quot;:&quot;<?php echo $wo['comment']['publisher']['type']?>&quot;}', event);" class="<?php echo Wo_RightToLeft('pull-left'); ?>" href="<?php echo $wo['comment']['publisher']['url']?>">
+		<img class="avatar <?php echo Wo_RightToLeft('pull-left'); ?>" src="<?php echo $wo['comment']['publisher']['avatar']?>" alt="avatar">
+	</a>
+	<div class="comment-body">
+		<div class="<?php echo Wo_RightToLeft('pull-right');?> comment-options sfsfsf">
+			<?php if ($wo['comment']['onwer'] === true) { ?>
+				<span class="pointer comment-icons" id="editComment" onclick="Wo_OpenCommentEditBox(<?php echo $wo['comment']['id']?>);" data-toggle="tooltip" title="Edit" style="margin-right: 7px;">
+					<i class="zmdi zmdi-edit" style="font-size: 13px;"></i>
+				</span>
+            <?php } ?>
+            <?php if ($wo['comment']['post_onwer'] === true|| $wo['comment']['onwer'] === true) {?>
+				<span class="pointer" id="deleteComment" onclick="Wo_DeleteComment(<?php echo $wo['comment']['id']?>);" data-toggle="tooltip" title="Delete">
+					<i class="zmdi zmdi-delete" style="font-size: 13px;"></i>
+				</span>
+            <?php } ?>
+		</div>
+		<div class="comment-heading wo_fb_comm">
+			<div class="innr_div">
+				<div class="comm_head">
+					<span class="user-popover" data-id="<?php echo $wo['comment']['publisher']['id'];?>" data-type="<?php echo $wo['comment']['publisher']['type'];?>">
+						<a href="<?php echo $wo['comment']['publisher']['url']?>" data-ajax="?link1=timeline&u=<?php echo $wo['comment']['publisher']['username'];?>" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['comment']['publisher']['id']?>&quot;, &quot;type&quot;:&quot;<?php echo $wo['comment']['publisher']['type']?>&quot;}', event);">
+							<h4 class="user"><?php echo $wo['comment']['publisher']['name']?></h4>
+						</a>
+					</span>
+					<?php  if($wo['comment']['publisher']['verified'] == 1) {   ?>
+					<span class="verified-color" data-toggle="tooltip" title="<?php echo $wo['lang']['verified_user'];?>"><i class="fa fa-check-circle"></i></span>
+					<?php } ?>
+				</div>
+
+				<div class="comment-text"><?php echo $wo['comment']['text']?></div>
+		 
+				<div class="comment-image">
+					<?php if (!empty($wo['comment']['c_file'])): ?>
+					<span data-href="<?php echo Wo_GetMedia($wo['comment']['c_file']);?>" onclick="Wo_OpenLighteBox(this,event);" class="pointer">
+						<img src="<?php echo Wo_GetMedia($wo['comment']['c_file']);?>" alt="Comment image">
+					</span>
+					<?php endif ?>
+				</div>
+		 
+				<?php if (!empty($wo['comment']['record'])): ?>
+					<div class="comment-record">
+						<audio controls preload="auto">
+							<source src="<?php echo Wo_GetMedia($wo['comment']['record']);?>" type="audio/wav">
+						</audio>
+						<style>.mejs-container {width: 100% !important;margin-left: auto;margin-right: auto;}</style>
+						<script>$('audio').mediaelementplayer();</script>
+					</div>
+				<?php endif;?>
+			</div>
+			<div class="clear"></div>
+		</div>
+      <span class="comment-options">
+         <span class="comment-icons" style="display: inline-block;">
+            <span class="pointer" id="LikeComment" onclick="Wo_RegisterCommentLike(<?php echo $wo['comment']['id']; ?>);">
+               <?php if($wo['comment']['is_comment_liked'] !== true) { ?>
+               <i class="zmdi zmdi-thumb-up" style="font-size: 13px;"></i>
+               <?php } else { ?>
+			   <i class="zmdi zmdi-thumb-up active-like" style="font-size: 13px;"></i>
+               <?php } ?>
+			   </span>
+            <span id="comment-likes">
+               <?php echo $wo['comment']['comment_likes'];?>
+            </span> ·
+         </span>
+		 <div style="display: inline-block;">
+         <span class="pointer" id="WonderComment" onclick="Wo_RegisterCommentWonder(<?php echo $wo['comment']['id']; ?>);">
+            <?php if($wo['comment']['is_comment_wondered'] !== true) { ?>
+            <i class="zmdi zmdi-<?php echo $wo['second_post_button_icon'];?>" style="font-size: 13px;"></i>
+            <?php } else {  ?>
+			<i class="zmdi zmdi-<?php echo $wo['second_post_button_icon'];?> active-wonder" style="font-size: 13px;"></i>
+            <?php } ?>
+			</span>
+         <span id="comment-wonders">
+            <?php echo $wo['comment']['comment_wonders'];?>
+         </span>
+		 </div>
+         <?php if ($replies == 0) { ?>
+         ·
+         <span class="pointer" id="ReplyComment" onclick="Wo_OpenReplyBox(<?php echo $wo['comment']['id']; ?>);" style="display: inline-block;">
+            <i class="zmdi zmdi-comment" style="font-size: 13px;"></i>
+         
+		 <span id="comment-replies">
+            <?php echo $replies;?>
+         </span>
+		 </span>
+         <?php } ?>
+		 ·
+		 <span class="time ajax-time" title="<?php echo date('c',$wo['comment']['time']);?>"><?php echo $wo['comment']['time']?></span>
+      </span>
+      <div class="comment-edit">
+         <textarea onkeyup="textAreaAdjust(this, 26)" class="edit-box form-control" onkeydown="Wo_EditComment(this.value,<?php echo $wo['comment']['id']?>, event)" placeholder="Edit Comment" dir="auto"><?php echo $wo['comment']['Orginaltext']?></textarea>
+      </div>
+		<div class="delete-comment" id="delete-comment" style="margin-top: 10px;position: relative;display:none">
+			<div style="width: 100%;padding: 10px 24px;box-shadow: none;border: 1px solid #ddd;">
+				<div>
+					<h4><?php echo $wo['lang']['delete_comment']; ?></h4>
+				</div>
+				<div>
+					<p><?php echo $wo['lang']['confirm_delete_comment']; ?></p>
+				</div>
+				<div>
+					<button id="delete-all-post" type="button" class="mdbtn btn btn-main"><i class="zmdi zmdi-delete" style="font-size: 19px;margin-top: -2px;margin-right: 5px;"></i> <?php echo $wo['lang']['delete']; ?></button>
+				</div>
+			</div>
+		</div>
+      <div class="comment-replies">
+         <div class="comment-replies-text">
+            <div class="reply-container"></div>
+         </div>
+         <?php if ($replies > 0) { ?>
+         <div class="view-more-replies" onclick="Wo_ViewMoreReplies(<?php echo $wo['comment']['id'];?>);">
+            <i class="fa fa-share fa-fw"></i> <?php echo $replies;?> <?php echo $wo['lang']['replies']?>
+         </div>
+         <?php } ?>
+         <div class="comment-reply">
+            <textarea onkeyup="commreplytextAreaAdjust(this, 35)" class="reply-box form-control textarea" onkeydown="Wo_RegisterReply(this.value,<?php echo $wo['comment']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)" placeholder="<?php echo $wo['lang']['reply_to_comment'];?>" dir="auto"></textarea>
+            <div id="hidden_inputbox_comment_reply"></div>
+         </div>
+      </div>
+   </div>
+   <script>
+   $(function () {
+   $("#comment_<?php echo $wo['comment']['id'];?> .comment-text").readmore({
+   speed: 75,
+   moreLink: '<a href="#" class="hash font-13"><?php echo $wo["lang"]["read_more"];?></a>',
+   lessLink: '<a href="#" class="hash font-13"><?php echo $wo["lang"]["read_less"];?></a>',
+   });
+   $("#comment_<?php echo $wo['comment']['id']; ?> .comment-reply input").triggeredAutocomplete({
+   hidden: '#hidden_inputbox_comment_reply',
+   source: Wo_Ajax_Requests_File() + "?f=mention",
+   trigger: "@"
+   });
+   
+   });
+   </script>
+</div>

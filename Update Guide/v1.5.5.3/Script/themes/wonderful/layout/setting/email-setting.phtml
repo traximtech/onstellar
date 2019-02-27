@@ -1,0 +1,164 @@
+<div class="list-group">
+   <div class="list-group-item"><i class="fa fa-fw fa-envelope-o"></i> <?php echo $wo['lang']['email_notification']; ?> <?php if(Wo_IsAdmin() === true) { ?><a href="<?php echo $wo['setting']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['setting']['username'] ?>">(<?php echo $wo['setting']['name'];?>)</a><?php } ?></div>
+   <div class="setting-well">
+   <form class="setting-general-form form-horizontal" method="post">
+      <fieldset>
+         <div class="setting-general-alert setting-update-alert"></div>
+         <!-- Multiple Radios (inline) -->
+         <div class="row">
+         	<div class="col-md-3"><h5><?php echo $wo['lang']['email_me_when']; ?></h5></div>
+         	<div class="col-lg-6 cusradiobox">
+         		<!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_liked   = ($wo['setting']['e_liked'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_liked" value="1" id="e_liked" <?php echo $selected_e_liked; ?>> <label for="e_liked"><?php echo $wo['lang']['e_likes_my_posts']; ?> </label>
+            </div>
+         </div>
+         <?php if ($wo['config']['second_post_button'] != 'disabled') { ?>
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_wondered   = ($wo['setting']['e_wondered'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_wondered" value="1" id="e_wondered" <?php echo $selected_e_wondered; ?>> <label for="e_wondered"><?php echo ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['e_wondered_my_posts'] : $wo['lang']['e_disliked_my_posts']; ?></label>
+            </div>
+         </div>
+         <?php } ?>
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_commented   = ($wo['setting']['e_commented'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_commented" value="1" id="e_commented" <?php echo $selected_e_commented; ?>> <label for="e_commented"><?php echo $wo['lang']['e_commented_my_posts']; ?></label>
+            </div>
+         </div>
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_shared = ($wo['setting']['e_shared'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_shared" value="1" id="e_shared" <?php echo $selected_e_shared; ?>> <label for="e_shared"><?php echo $wo['lang']['e_shared_my_posts']; ?> </label>
+            </div>
+         </div>
+          <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_followed = ($wo['setting']['e_followed'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_followed" value="1" id="e_followed" <?php echo $selected_e_followed; ?>> <label for="e_followed"><?php echo $wo['lang']['e_followed_me']; ?> </label>
+            </div>
+         </div>
+
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_liked_page = ($wo['setting']['e_liked_page'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_liked_page" value="1" id="e_liked_page" <?php echo $selected_e_liked_page; ?>> <label for="e_liked_page"><?php echo $wo['lang']['e_liked_page']; ?> </label>
+            </div>
+         </div>
+
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_visited = ($wo['setting']['e_visited'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_visited" value="1" id="e_visited" <?php echo $selected_e_visited; ?>> <label for="e_visited"><?php echo $wo['lang']['e_visited_my_profile']; ?> </label>
+            </div>
+         </div>
+
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_mentioned = ($wo['setting']['e_mentioned'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_mentioned" value="1" id="e_mentioned" <?php echo $selected_e_mentioned; ?>> <label for="e_mentioned"><?php echo $wo['lang']['e_mentioned_me']; ?> </label>
+            </div>
+         </div>
+
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_joined_group = ($wo['setting']['e_joined_group'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_joined_group" value="1" id="e_joined_group" <?php echo $selected_e_joined_group; ?>> <label for="e_joined_group"><?php echo $wo['lang']['e_joined_group']; ?> </label>
+            </div>
+         </div>
+
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_accepted = ($wo['setting']['e_accepted'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_accepted" value="1" id="e_accepted" <?php echo $selected_e_accepted; ?>> <label for="e_accepted"><?php echo $wo['lang']['e_accepted']; ?> </label>
+            </div>
+         </div>
+         <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_profile_wall_post = ($wo['setting']['e_profile_wall_post'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_profile_wall_post" value="1" id="e_profile_wall_post" <?php echo $selected_e_profile_wall_post; ?>> <label for="e_profile_wall_post"><?php echo $wo['lang']['e_profile_wall_post']; ?> </label>
+            </div>
+         </div>
+		 <!-- Multiple Radios (inline) -->
+         <div class="form-group">
+            <?php 
+            $selected_e_sentme_msg = ($wo['setting']['e_sentme_msg'] == 1)   ? ' checked' : '';
+            ?>
+            <div class="col-md-12">
+               <input type="checkbox" name="e_sentme_msg" value="1" id="e_sentme_msg" <?php echo $selected_e_sentme_msg; ?>> <label for="e_sentme_msg"><?php echo $wo['lang']['e_sent_msg']; ?> </label>
+            </div>
+         </div>
+         
+         <div class="form-group" style="text-align: center;">
+            <div class="col-sm-3">
+               <button type="submit" class="mdbtn wabe btn btn-main">
+               <i class="fa fa-floppy-o progress-icon" data-icon="floppy-o"></i> <?php echo $wo['lang']['save']; ?>
+               </button>
+            </div>
+         </div>
+         	</div>
+			<div class="col-md-3"></div>
+         </div>
+         <input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id'];?>">
+         <input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+      </fieldset>
+   </form>
+   </div>
+</div>
+<script type="text/javascript">
+$(function() {
+  $('form.setting-general-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=update_email_settings',
+    beforeSend: function() {
+      Wo_progressIconLoader($('form.setting-general-form').find('button'));
+    },
+    success: function(data) {
+      scrollToTop();
+      if (data.status == 200) {
+        $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+           $(this).delay(2500).slideUp(500, function() {
+              $(this).remove();
+            });
+        });
+      } 
+      Wo_progressIconLoader($('form.setting-general-form').find('button'));
+    }
+  });
+});
+</script>

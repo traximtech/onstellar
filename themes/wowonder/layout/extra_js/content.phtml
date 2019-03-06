@@ -273,10 +273,12 @@ function Wo_Translate(id,lang){
 $(document).on('click', '#night_mode_toggle', function(event) {
   mode = $(this).attr('data-mode');
   if (mode == 'night') {
+      $("#logo").attr("src","<?php echo $wo['config']['theme_url'];?>/img/logo-1.png");
       $('head').append('<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/dark.css<?php echo $wo['update_cache']; ?>" id="night-mode-css">');
       $('#night_mode_toggle').attr('data-mode', 'day');
       $('#night-mode-text').text('<?php echo $wo['lang']['day_mode']?>');
   } else {
+      $("#logo").attr("src","<?php echo $wo['config']['theme_url'];?>/img/day.png");
       $('#night-mode-css').remove();
       $('#night_mode_toggle').attr('data-mode', 'night');
       $('#night-mode-text').text('<?php echo $wo['lang']['night_mode']?>');

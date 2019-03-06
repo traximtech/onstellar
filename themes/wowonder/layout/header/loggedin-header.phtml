@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <?php
 $notification_alert     = Wo_CountNotifications(array(
     'unread' => true,
@@ -115,7 +116,7 @@ if ($followers_alert == 0) {
 			</li>
 		</ul>
 	</li>
-	<li class="dropdown">
+	<li class="dropdown shoping-carts" style="display: inline-flex;">
 		<a href="#" class="dropdown-toggle user-menu-combination" data-toggle="dropdown" role="button" aria-expanded="false">
 			<!--<span id="user-full-name" class="User-Name hidden-xs">
 				<?php if($wo['user']['first_name'] == false) {?>
@@ -128,7 +129,10 @@ if ($followers_alert == 0) {
 				<img id="updateImage-<?php echo $wo['user']['user_id']?>" src="<?php echo $wo['user']['avatar'];?>" alt="<?php echo $wo['user']['name'];?> Profile Picture">
 			</div>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+
+			<div class="shoping-cart"><a href="my-products"><i class="fa fa-shopping-cart" style="color:#fff;margin-top: 15px;font-size: 18px;"></i></a></div>
 		</a>
+       
 		<ul class="dropdown-menu ani-acc-menu" role="menu">
 			<li>
 				<a id="update-username" href="<?php echo $wo['user']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['user']['username'];?>"><b><?php echo $wo['user']['name'];?></b></a>
@@ -268,6 +272,10 @@ if ($followers_alert == 0) {
 				</a>
 			</li>
 			<span class="headtoppoint"></span>
+
 		</ul>
-	</li>
+
+		
+        
+			</li>
 </ul>

@@ -1,4 +1,5 @@
 <?php
+
 if ($wo['loggedin'] == false) {
     header("Location: " . Wo_SeoLink('index.php?link1=welcome'));
     exit();
@@ -7,7 +8,10 @@ if (Wo_IsUserComplete($wo['user']['user_id']) === false) {
 	header("Location: " . Wo_SeoLink('index.php?link1=welcome'));
     exit();
 }
-if ($wo['user']['startup_image'] == 0) {
+if($wo['user']['welcome_onstellar'] == 0) {
+	$page = 'index';
+}
+else if ($wo['user']['startup_image'] == 0) {
 	$page = 'avatar_startup';
 } else if ($wo['user']['start_up_info'] == 0) {
 	$page = 'info_startup';

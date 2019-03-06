@@ -598,6 +598,21 @@ if ($f == 'login') {
     exit();
 }
 if ($f == 'register') {
+    $day = Wo_Secure($_POST['birth_day'], 0);
+        $month = Wo_Secure($_POST['birth_month'], 0);
+        $year = Wo_Secure($_POST['birth_year'], 0);
+        $age = $day.'-'.$month.'-'.$year;
+        $today_date = date("Y-m-d");
+        $diff = date_diff(date_create($age), date_create( $today_date));
+        if($diff->format('%y') < 13)
+        {
+        
+        echo "fail";exit;
+        }
+    // if(date('Y',time())-$_POST['birth_year']<13){
+    //     echo "4";exit;
+    // }
+
     $fields = Wo_GetWelcomeFileds();
     if (empty($_POST['email']) || empty($_POST['username']) || empty($_POST['password']) || empty($_POST['confirm_password'])) {
         $errors = $error_icon . $wo['lang']['please_check_details'];
@@ -687,11 +702,12 @@ if ($f == 'register') {
             }
         }
         $activate = ($wo['config']['emailValidation'] == '1') ? '0' : '1';
-        $code = md5(rand(1111, 9999) . time());
+        $code = md5(rand(1111, 9999) . time()); 
         $re_data  = array(
             'email' => Wo_Secure($_POST['email'], 0),
             'username' => Wo_Secure($_POST['username'], 0),
             'password' => Wo_Secure($_POST['password'], 0),
+             'age' => $age,
             'email_code' => Wo_Secure($code, 0),
             'src' => 'site',
             'gender' => Wo_Secure($gender),
@@ -777,6 +793,7 @@ if ($f == 'register') {
     }
     exit();
 }
+
 if ($f == 'recover') {
     if (empty($_POST['recoveremail'])) {
         $errors = $error_icon . $wo['lang']['please_check_details'];
@@ -862,6 +879,7 @@ if ($f == 'recoversms') {
     }
     exit();
 }
+
 if ($f == 'reset_password') {
     if (isset($_POST['id'])) {
         $user_id  = explode("_", $_POST['id']);
@@ -13257,7 +13275,36 @@ if ($f == 'download_user_info') {
     echo json_encode($data);
     exit();
 }
+if ($f == 'add-categories') {
+   
+  
+     echo $user_id=$wo['user']['user_id']; 
+    @$ids = implode(",",@$_POST['chk2']);
+    if(!empty($_POST['selector']))
+    {
+       echo  $gender=$_POST['selector'];
+    }
+    else
+    {
+        $gender="";
+    }
+     $update_user = $db->where('user_id',$user_id)->update(T_USERS, array('welcome_onstellar' =>1,'categories'=>$ids,'gender'=> $gender));
+     if($update_user)
+     {
+        echo  "updated";
+     }
+  
+    // if($mysqli)
+    // {
+    //     $update_user = $db->where('user_id',23)->update(T_USERS, array('welcome_onstellar' =>1));
+    //     if($update_user )
+    //     {
+    //         echo "";
+    //     }
+    // }
 
+
+}
 mysqli_close($sqlConnect);
 unset($wo);
 ?>

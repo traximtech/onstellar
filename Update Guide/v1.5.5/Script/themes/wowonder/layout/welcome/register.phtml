@@ -74,7 +74,10 @@ $(function() {
         }, 1000);
       } else if (data.status == 300) {
         window.location.href = data.location;
-      } else {
+      }else if (data.status == "fail") {
+        window.location.href = data.location;
+      } 
+      else {
         $state.html(register_button_text);
         $this.removeClass('ok loading', function () {
          $state.html(data.errors);

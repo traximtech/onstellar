@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"/>
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <style>
+      * {
+      box-sizing: border-box;
+      }
+      #regForm {
+      padding: 60px 30px 30px 30px;
+      width: 60%;
+      }
+      h1 {
+      text-align: center;  
+      }
+      /* Mark input boxes that gets an error on validation: */
+      #regForm input.invalid {
+      background-color: #ffdddd;
+      }
+      /* Hide all steps by default: */
+      .tab {
+      display: none;
+      }
+      #regForm button {
+      width:100%;
+      background-color: #e60120;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 17px;
+      font-family: Raleway;
+      cursor: pointer;
+      margin-top:20px;
+      margin-bottom:10px;
+      }
+      #prevBtn {
+      background-color: #bbbbbb;
+      }
+      #regForm{
+      position:relative;
+      }
+      /* Make circles that indicate the steps of the form: */
+      .dotts{
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      }
+      #regForm h2{
+      text-align:center;
+      }
+      .step {
+      margin: 0 9px;
+      background-color: #000;
+      border: none;  
+      border-radius: 50%;
+      display: inline-block;
+      height: 10px;
+      width: 10px;
+      margin-top: 11px;
+      }
+      /* Mark the steps that are finished and valid: */
+      .step.finish {
+      background-color: #e60023;
+      height: 15px;
+      width: 15px;
+      margin-top: 8px;
+      }
+      .login{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100%;
+      text-align:center;
+      }
+      .stellar-login img{
+      width: 40%;
+      display:block;
+      margin:auto;
+      }
+      #regForm .logo-img{
+      width:50%;
+      }
+      #regForm h2{
+      color: #333;
+      font-size: 30px;
+      letter-spacing: -.4px;
+      font-weight:bold;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif 
+      }
+      #regForm p{
+      color:#494949;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif 
+      }
+      .stellar-login li{
+      display:inline-block;
+      }
+      .stellar-login li:nth-child(2) button{
+      outline:none;
+      color:#fff;
+      padding: 6px 12px;
+      font-size: 17px;
+      font-weight:bold;
+      cursor: pointer;
+      background-color:#bb181b;
+      }
+      .stellar-login li:first-child button{
+      outline:none;
+      padding: 6px 12px;
+      font-size: 17px;
+      font-weight:bold;
+      cursor: pointer;
+      }
+      .radio-btn li{
+      color: #AAAAAA;
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 80px;
+      border-bottom: 1px solid #333;
+      }
+      .radio-btn li input[type=radio]{
+      position: absolute;
+      visibility: hidden;
+      }
+      .radio-btn li label{
+      display: block;
+      position: relative;
+      font-weight: 300;
+      font-size: 20px ;
+      padding: 20px 25px 25px 58px;
+      margin: 10px auto;
+      height: 30px;
+      z-index: 9;
+      text-align: left;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      -webkit-transition: all 0.25s linear;
+      }
+      .radio-btn li .check{
+      display: block;
+      position: absolute;
+      border: 1px solid #e2e2e2;
+      border-radius: 100%;
+      height: 25px;
+      width: 25px;
+      top: 30px;
+      left: 20px;
+      z-index: 5;
+      transition: border .25s linear;
+      -webkit-transition: border .25s linear;
+      }
+      .radio-btn li:hover .check {
+      border: 1px solid #e2e2e2;
+      }
+      .radio-btn li .check::before {
+      display: block;
+      position: absolute;
+      content: '';
+      border-radius: 100%;
+      height: 15px;
+      width: 15px;
+      top: 4px;
+      left: 0px;
+      right: 0;
+      margin: auto;
+      transition: background 0.25s linear;
+      -webkit-transition: background 0.25s linear;
+      }
+      .radio-btn input[type=radio]:checked ~ .check {
+      border: 1px solid #e2e2e2;
+      }
+      .radio-btn input[type=radio]:checked ~ .check::before{
+      background: #333333;
+      }
+      .radio-btn input[type=radio]:checked ~ label{
+      color: #000;
+      }
+      .login-form{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100%;
+      text-align: center;
+      }
+      #regForm{
+      position:relative;
+      box-shadow: 1px 2px 3px 2px rgba(0, 0, 0, 0.1) !important;
+      }
+      btn{
+      outline:none;
+      }
+      .right{
+      background-color:rgba(0,0,0,0.7);
+     background-image: url('images/2.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+     
+      }
+      .check-image-span{
+      top: 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      }
+      .check-image {
+      position: relative;
+      }
+      .form-group{
+      width:100%;
+      float:left;
+      }
+      .form-group .check-image{
+      margin-bottom:10px;
+      }
+       .form-group .check-image img{
+      width:100%;
+      }
+      .content{
+        overflow: hidden;
+    overflow-y: scroll;
+    height: 280px;
+      }
+
+   </style>
+   <body>
+      <div class="container">
+         <div class="row">
+            <div class="login-form">
+               <div id="regForm">
+                  <div class="dotts">
+                     <span class="step"></span>
+                     <span class="step"></span>
+                     
+                  </div>
+                  <!-- One "tab" for each step in the form: -->
+                  <div class="tab">
+                     <img class="logo-img" src="http://localhost/script/themes/wowonder/img/logo-1.png"/>
+                     <h2>Welcome to Onstellar,<br>
+                        <a id="update-username" href="<?php echo $wo['user']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['user']['username'];?>"><b><?php echo $wo['user']['name'];?></b></a>
+                     </h2>
+                     <p>Your answers to the next few questions will make your experience better</p>
+                  </div>
+                  <form  method="post" id="devel-generate-content-form" accept-charset="UTF-8" class="add-categories">
+                  <div class="tab">
+                     <h2>
+                     Tell us about yourself,<br>
+                     <ul class="radio-btn">
+                        <li>
+                           <input type="radio" id="f-option" name="selector" value="Male">
+                           <label for="f-option">Male</label>
+                           <div class="check"></div>
+                        </li>
+                        <li>
+                           <input type="radio" id="s-option" name="selector" value="Female">
+                           <label for="s-option">Female</label>
+                           <div class="check">
+                              <div class="inside"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <input type="radio" id="t-option" name="selector">
+                           <label for="t-option">Enter custom gender</label>
+                           <div class="check">
+                              <div class="inside"></div>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+                  <div class="tab">
+                     <div class="form-group">
+                    <!--     <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                        <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox" name="chk2" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div> -->
+                        <div class="content">
+
+    <p>Last Step!Tell us what you're interested in</p>
+    <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"   name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+                         <div class="col-md-3"><label class="btn check-image ">
+                           <img src="http://content.nike.com/content/dam/one-nike/globalAssets/menu_header_images/OneNike_Global_Nav_Icons_Basketball.png" alt="..." class=" img-check">
+                           <input type="checkbox"  name="chk2[]" id="item4" value="val2" class="hidden" autocomplete="off">
+                           <span class="check-image-span check-image-span1"></span>
+                           </label>
+                        </div>
+    <!-- <div class="count-checkboxes-wrapper">
+    <span id="count-checked-checkboxes">0</span> checked
+    </div>
+ -->
+
+</div>
+
+
+
+
+                     </div>
+                  </div>
+                  <div class="tab">
+                  </div>
+                  <!-- <div style="overflow:auto;"> -->
+                  <div>
+                    <!-- <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> --> 
+                     <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                     <button type="submit" class="btn btn-primary m-t-15 waves-effect" id="submit" style="display:none;">Create</button>
+                    
+                  </div>
+                  </form>
+            </div>
+            <!-- Circles which indicates the steps of the form: -->
+            </div>
+         </div>
+      </div>
+      </div>
+      <script>
+         $(document).ready(function(e){
+                $(".check-image-span").click(function(){
+                $(this).toggleClass("right");
+              });
+          });
+      </script>
+      <script>
+         var currentTab = 0; // Current tab is set to be the first tab (0)
+         showTab(currentTab); // Display the current tab
+         
+         function showTab(n) {
+           // This function will display the specified tab of the form...
+           var x = document.getElementsByClassName("tab");
+           x[n].style.display = "block";
+           //... and fix the Previous/Next buttons:
+           if (n == 0) {
+             document.getElementById("prevBtn").style.display = "none";
+           } else {
+             document.getElementById("prevBtn").style.display = "inline";
+           }
+           if (n == (x.length - 1)) {
+             document.getElementById("nextBtn").innerHTML = "Submit";
+           } else {
+             document.getElementById("nextBtn").innerHTML = "Next";
+           }
+           //... and run a function that will display the correct step indicator:
+           fixStepIndicator(n)
+         }
+         
+         function nextPrev(n) {
+           // This function will figure out which tab to display
+           var x = document.getElementsByClassName("tab");
+           // Exit the function if any field in the current tab is invalid:
+           if (n == 1 && !validateForm()) return false;
+           // Hide the current tab:
+           x[currentTab].style.display = "none";
+           // Increase or decrease the current tab by 1:
+           currentTab = currentTab + n;
+           // if you have reached the end of the form...
+           if (currentTab >= x.length) {
+             // ... the form gets submitted:
+             document.getElementById("regForm").submit();
+             return false;
+           }
+           // Otherwise, display the correct tab:
+           showTab(currentTab);
+         }
+         
+         function validateForm() {
+           // This function deals with validation of the form fields
+           var x, y, i, valid = true;
+           x = document.getElementsByClassName("tab");
+           y = x[currentTab].getElementsByTagName("input");
+           // A loop that checks every input field in the current tab:
+           for (i = 0; i < y.length; i++) {
+             // If a field is empty...
+             if (y[i].value == "") {
+               // add an "invalid" class to the field:
+               y[i].className += " invalid";
+               // and set the current valid status to false
+               valid = false;
+             }
+           }
+           // If the valid status is true, mark the step as finished and valid:
+           if (valid) {
+             document.getElementsByClassName("step")[currentTab].className += " finish";
+           }
+           return valid; // return the valid status
+         }
+         
+         function fixStepIndicator(n) {
+           // This function removes the "active" class of all steps...
+           var i, x = document.getElementsByClassName("step");
+           for (i = 0; i < x.length; i++) {
+             x[i].className = x[i].className.replace(" active", "");
+           }
+           //... and adds the "active" class on the current step:
+           x[n].className += " active";
+         }
+      </script>
+      <script>
+        $(document).ready(function(){
+    var $checkboxes = $('#devel-generate-content-form  input[type="checkbox"]');  
+    $checkboxes.change(function(){
+        //  $('#nextBtn').prop('disabled', true);   
+        var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
+        if(countCheckedCheckboxes < 5)
+        {
+          $('#submit').prop('disabled', true);  
+            $("#submit").css("background-color", "#ccc");
+             $("#submit").css("color", "#000");
+        }
+        else
+        {
+           $('#submit').prop('disabled', false); 
+           $("#submit").css("background-color", "#e60120"); 
+           $("#submit").css("color", "#fff");
+           $("#nextBtn").hide();
+           $("#submit").show();
+        }
+        //alert(countCheckedCheckboxes);
+        
+        
+    });
+
+});
+      </script>
+      <script type="text/javascript">
+        var count=5;
+    function update_value(chk_bx){
+      
+        // if(chk_bx.checked)
+        // {
+        //     alert(count=count-1);
+        //   }
+        // else{
+             
+        //      alert(count=count+1);
+        //     // $('#nextBtn').text("Pick" +count+ "more");
+        // }
+       
+     
+    }
+</script>
+<script>
+$(function() {
+    var form_add_settings = $('form.add-categories');
+    form_add_settings.ajaxForm({
+        url: Wo_Ajax_Requests_File() + '?f=add-categories',
+        beforeSend: function() {
+            form_add_settings.find('.waves-effect').text('Please wait..');
+        },
+        success: function(data) {
+            setTimeout(function(){
+             location.reload();
+         },1000);
+           //form_add_settings.find('.waves-effect').text('Create');   
+      }
+});
+});
+</script>
+
+   </body>
+</html>

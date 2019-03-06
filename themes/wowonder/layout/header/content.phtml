@@ -2,7 +2,13 @@
   <nav class="header-fixed1000">
     <div class="container-fluid">
       <a class="brand header-brand" href="<?php echo $wo['config']['site_url']; ?>">
-        <img width="130" src="<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>" alt="<?php echo $wo['config']['siteName'];?> Logo"/>
+        <?php if($_COOKIE['mode']=="night"){?>
+        <img  id="logo" width="130" src="<?php echo $wo['config']['theme_url'];?>/img/logo-1.png" alt="<?php echo $wo['config']['siteName'];?> Logo"/>
+      <?php } 
+       else if($_COOKIE['mode']=="day"){?>
+      <img  id="logo" width="130" src="<?php echo $wo['config']['theme_url'];?>/img/day.png" alt="<?php echo $wo['config']['siteName'];?> Logo"/>
+
+      <?php } ?>
       </a>
         <ul class="nav navbar-nav">
           <li class="dropdown search-container">

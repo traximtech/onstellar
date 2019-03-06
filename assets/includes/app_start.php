@@ -156,9 +156,11 @@ $wo['site_pages'] = array(
     'my-products',
     'blogs',
     'sharer',
+    'login',
     'app_api',
     'api_request',
-    'authorize'
+    'authorize',
+    'index'
 );
 
 $wo['script_version']  = '2.1.1';
